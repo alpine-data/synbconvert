@@ -28,6 +28,15 @@ print("This code will not)
 # @nb-exclude-ende
 ```
 
+**Markdown**
+
+```python
+# @nb-md-begin
+# Hello World!
+Lorem Ipsum doloir sit amet.
+# @nb-md-end
+```
+
 **Include Files**
 
 ```python
