@@ -19,16 +19,31 @@ class SynapseNotebookHandler(object):
 
     def write_synapse_notebook(self, file: str, lines):
         cells = []
+        hidden = False
         for i, line in enumerate(lines):
             if line.startswith(cell_begin_marker(self.cell_types.CODE)):
+                hidden = False
                 cell_type = self.cell_types.CODE
                 cell_start_index = i + 1
             if line.startswith(cell_begin_marker(self.cell_types.MARKDOWN)):
+                hidden = False
                 cell_type = self.cell_types.MARKDOWN
                 cell_start_index = i + 1
+            if line.startswith(cell_ignore_marker()):
+                hidden = True
             if line.startswith(cell_end_marker(cell_type)):
                 cell_end_index = i
-                cells.append(create_cell(cell_type, lines[cell_start_index:cell_end_index]))
+                if not hidden:
+                    if cell_type == self.cell_types.MARKDOWN:
+                        cells.append(create_cell(cell_type, uncomment_lines(lines[cell_start_index:cell_end_index]), hidden))
+                    else:
+                        cells.append(create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
+                else:
+                    cell_start_index += 1
+                    if cell_type == self.cell_types.MARKDOWN:
+                        cells.append(create_cell(cell_type, uncomment_lines(lines[cell_start_index:cell_end_index]), hidden))
+                    else:
+                        cells.append(create_cell(cell_type, comment_lines(lines[cell_start_index:cell_end_index]), hidden))
 
         if os.path.isfile(file):
             with open(file) as f:
@@ -45,11 +60,22 @@ class SynapseNotebookHandler(object):
                 json.dump(data, f)
 
 
-def create_cell(cell_type: str, source: List[str]):
-    return {
+def create_cell(cell_type: str, source: List[str], hidden: bool):
+    cell = {
         'cell_type': cell_type,
         'source': source
     }
+    cell['metadata'] = create_cell_metadata(hidden)
+    return cell
+
+
+def create_cell_metadata(hidden):
+    return {
+		'jupyter': {
+			'source_hidden': hidden,
+		    'outputs_hidden': hidden
+		}
+    } 
 
 
 def create_synapse_notebook_template():

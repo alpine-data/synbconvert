@@ -23,23 +23,34 @@ class PythonFileHandler(object):
 
     def write_code(self, f, cell: Dict, cell_type: str) -> None:
         source_lines = cell['source']
+        hidden = get_cell_hidden_state(cell)
         f.write(cell_begin_marker(cell_type))
+        if hidden:
+            f.write(cell_ignore_marker())
         for line in source_lines:
-            f.write(line)
+            if hidden:
+                f.write(uncomment_line(line))
+            else:
+                f.write(line)
         if not line.endswith('\n'):
             f.write('\n')
         f.write(cell_end_marker(cell_type))
     
     def write_markdown(self, f, cell: Dict, cell_type: str) -> None:
         source_lines = cell['source']
+        hidden = get_cell_hidden_state(cell)
         f.write(cell_begin_marker(cell_type))
+        if hidden:
+            f.write(cell_ignore_marker())
         for line in source_lines:
             f.write(comment_line(line))
         if not line.endswith('\n'):
             f.write('\n')
         f.write(cell_end_marker(cell_type))
 
-
-def comment_line(line: str):
-    line = f'# {line}'
-    return line
+def get_cell_hidden_state(cell):
+    try:
+        hidden = cell['metadata']['jupyter']['source_hidden']
+    except KeyError:
+        hidden = False
+    return hidden
