@@ -29,21 +29,16 @@ class SynapseNotebookHandler(object):
                 hidden = False
                 cell_type = self.cell_types.MARKDOWN
                 cell_start_index = i + 1
-            if line.startswith(cell_ignore_marker()):
+            if line.startswith(cell_begin_ignore_marker()):
                 hidden = True
-            if line.startswith(cell_end_marker(cell_type)):
+                cell_type = self.cell_types.CODE
+                cell_start_index = i + 1
+            if line.startswith(cell_end_marker(cell_type)) or line.startswith(cell_end_ignore_marker()):
                 cell_end_index = i
-                if not hidden:
-                    if cell_type == self.cell_types.MARKDOWN:
-                        cells.append(create_cell(cell_type, uncomment_lines(lines[cell_start_index:cell_end_index]), hidden))
-                    else:
-                        cells.append(create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
+                if cell_type == self.cell_types.MARKDOWN:
+                    cells.append(create_cell(cell_type, uncomment_lines(lines[cell_start_index:cell_end_index]), hidden))
                 else:
-                    cell_start_index += 1
-                    if cell_type == self.cell_types.MARKDOWN:
-                        cells.append(create_cell(cell_type, uncomment_lines(lines[cell_start_index:cell_end_index]), hidden))
-                    else:
-                        cells.append(create_cell(cell_type, comment_lines(lines[cell_start_index:cell_end_index]), hidden))
+                    cells.append(create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
 
         if os.path.isfile(file):
             with open(file) as f:
@@ -82,11 +77,33 @@ def create_synapse_notebook_template():
     return {
         'name': '',
         'properties': {
-            'folder': {},
-            'nbformat': 0,
-            'nbformat_minor': 0,
-            'sessionProperties': {},
-            'metadata': {},
+            'nbformat': 4,
+            'nbformat_minor': 2,
+            'sessionProperties': {
+                'driverMemory': '28g',
+                'driverCores': 4,
+                'executorMemory': '28g',
+                'executorCores': 4,
+                'numExecutors': 2,
+                'conf': {
+                    'spark.dynamicAllocation.enabled': 'false',
+                    'spark.dynamicAllocation.minExecutors': '2',
+                    'spark.dynamicAllocation.maxExecutors': '2',
+                    'spark.autotune.trackingId': ''
+                }
+            },
+            'metadata': {
+                'saveOutput': True,
+                'enableDebugMode': False,
+                'kernelspec': {
+                    'name': 'synapse_pyspark',
+                    'display_name': 'python'
+                },
+                'language_info': {
+                    'name': 'python'
+                },
+                'sessionKeepAliveTimeout': 30
+            },
             'cells': []
         }
     }

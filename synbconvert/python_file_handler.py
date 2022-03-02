@@ -24,9 +24,10 @@ class PythonFileHandler(object):
     def write_code(self, f, cell: Dict, cell_type: str) -> None:
         source_lines = cell['source']
         hidden = get_cell_hidden_state(cell)
-        f.write(cell_begin_marker(cell_type))
         if hidden:
-            f.write(cell_ignore_marker())
+            f.write(cell_begin_ignore_marker())
+        else:
+            f.write(cell_begin_marker(cell_type))
         for line in source_lines:
             if hidden:
                 f.write(uncomment_line(line))
@@ -34,19 +35,21 @@ class PythonFileHandler(object):
                 f.write(line)
         if not line.endswith('\n'):
             f.write('\n')
-        f.write(cell_end_marker(cell_type))
+        if hidden:
+            f.write(cell_end_ignore_marker())
+        else:
+            f.write(cell_end_marker(cell_type))
+        f.write('\n')
     
     def write_markdown(self, f, cell: Dict, cell_type: str) -> None:
         source_lines = cell['source']
-        hidden = get_cell_hidden_state(cell)
         f.write(cell_begin_marker(cell_type))
-        if hidden:
-            f.write(cell_ignore_marker())
         for line in source_lines:
             f.write(comment_line(line))
         if not line.endswith('\n'):
             f.write('\n')
         f.write(cell_end_marker(cell_type))
+        f.write('\n')
 
 def get_cell_hidden_state(cell):
     try:

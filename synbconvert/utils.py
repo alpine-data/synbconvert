@@ -10,20 +10,24 @@ class CellTypes:
 
 def cell_begin_marker(cell_type: str):
     if cell_type == 'code':
-        return '# %%cell-begin-code\n'
+        return '# @cell-begin-code\n'
     if cell_type == 'markdown':
-        return '# %%cell-begin-markdown\n'
+        return '# @cell-begin-markdown\n'
 
 
 def cell_end_marker(cell_type: str):
     if cell_type == 'code':
-        return '# %%cell-end-code\n'
+        return '# @cell-end-code\n'
     if cell_type == 'markdown':
-        return '# %%cell-end-markdown\n'
+        return '# @cell-end-markdown\n'
 
 
-def cell_ignore_marker():
-    return '# %%cell-ignore\n'
+def cell_begin_ignore_marker():
+    return '# @cell-begin-ignore\n'
+
+
+def cell_end_ignore_marker():
+    return '# @cell-end-ignore\n'
 
 
 def comment_line(line: str):
