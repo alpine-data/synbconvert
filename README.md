@@ -60,3 +60,18 @@ nb.convert_to_python(source_file = './notebooks/some_notebook.json', target_file
 synbconvert to-python --source-file '...' --target-file '...'
 synbconvert to-notebook --source-file '...' --target-file '...'
 ```
+
+# Development
+
+`synbconvert` uses [Poetry](https://python-poetry.org/) for dependency management and is packaged with [PyInstaller](https://www.pyinstaller.org/). The minimal requirements for a developer workspace are [Conda](https://docs.conda.io/en/latest/miniconda.html) and [Poetry](https://python-poetry.org/docs/#installation).
+
+```
+$ git clone git@github.com:alpine-data/synbconvert.git
+$ cd synbconvert
+$ conda create -p ./env python=3.8
+$ conda activate ./env
+
+$ poetry install
+```
+
+For testing we use [Python Behave](https://behave.readthedocs.io/en/stable/index.html). To run the tests, use `poe test` command. Code formatting and static code analysis can be executed with `poe style`.

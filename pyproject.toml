@@ -17,7 +17,7 @@ flake8 = "^4.0.1"
 mypy = "^0.931"
 
 [tool.poe.tasks]
-lint = [
+style = [
     { cmd = "isort synbconvert" },
     { cmd = "black synbconvert" },
     { cmd = "flake8 synbconvert" },
