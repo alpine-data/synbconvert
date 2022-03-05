@@ -13,13 +13,18 @@ behave = "^1.2.6"
 poethepoet = "^0.13.1"
 black = "^22.1.0"
 isort = "^5.10.1"
+flake8 = "^4.0.1"
+mypy = "^0.931"
 
 [tool.poe.tasks]
-style = [
+lint = [
     { cmd = "isort synbconvert" },
-    { cmd = "isort features/steps" },
     { cmd = "black synbconvert" },
-    { cmd = "black features/steps" }
+    { cmd = "flake8 synbconvert" },
+    { cmd = "mypy synbconvert" },
+    { cmd = "isort features/steps" },
+    { cmd = "black features/steps" },
+    { cmd = "flake8 features/steps" }
 ]
 test = "behave"
 

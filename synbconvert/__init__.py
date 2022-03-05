@@ -1,1 +1,1 @@
-from .synbconvert import SynapseNotebookConverter
+from .synbconvert import SynapseNotebookConverter  # noqa: F401

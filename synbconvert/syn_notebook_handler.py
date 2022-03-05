@@ -1,14 +1,15 @@
 import json
 import os
-from typing import Dict, List
+from typing import Dict
+from typing import List
 
-from synbconvert.utils import *
+from synbconvert import utils
 
 
 class SynapseNotebookHandler(object):
-    def __init__(self):
+    def __init__(self) -> None:
         super(SynapseNotebookHandler, self).__init__()
-        self.cell_types = CellTypes()
+        self.cell_types = utils.CellTypes()
 
     def read_synapse_notebook(self, file: str) -> List[Dict]:
         with open(file) as f:
@@ -16,31 +17,33 @@ class SynapseNotebookHandler(object):
             cells = data["properties"]["cells"]
         return cells
 
-    def write_synapse_notebook(self, file: str, lines):
+    def write_synapse_notebook(self, file: str, lines: List[str]) -> None:
         cells = []
         hidden = False
         for i, line in enumerate(lines):
-            if line.startswith(cell_begin_marker(self.cell_types.CODE)):
+            if line.startswith(utils.cell_begin_marker(self.cell_types.CODE)):
                 hidden = False
                 cell_type = self.cell_types.CODE
                 cell_start_index = i + 1
-            if line.startswith(cell_begin_marker(self.cell_types.MARKDOWN)):
+            if line.startswith(utils.cell_begin_marker(self.cell_types.MARKDOWN)):
                 hidden = False
                 cell_type = self.cell_types.MARKDOWN
                 cell_start_index = i + 1
-            if line.startswith(cell_begin_ignore_marker()):
+            if line.startswith(utils.cell_begin_ignore_marker()):
                 hidden = True
                 cell_type = self.cell_types.CODE
                 cell_start_index = i + 1
-            if line.startswith(cell_end_marker(cell_type)) or line.startswith(
-                cell_end_ignore_marker()
+            if line.startswith(utils.cell_end_marker(cell_type)) or line.startswith(
+                utils.cell_end_ignore_marker()
             ):
                 cell_end_index = i
                 if cell_type == self.cell_types.MARKDOWN:
                     cells.append(
                         create_cell(
                             cell_type,
-                            uncomment_lines(lines[cell_start_index:cell_end_index]),
+                            utils.uncomment_lines(
+                                lines[cell_start_index:cell_end_index]
+                            ),
                             hidden,
                         )
                     )
@@ -66,17 +69,17 @@ class SynapseNotebookHandler(object):
                 json.dump(data, f)
 
 
-def create_cell(cell_type: str, source: List[str], hidden: bool):
-    cell = {"cell_type": cell_type, "source": source}
+def create_cell(cell_type: str, source: List[str], hidden: bool) -> dict:
+    cell: dict = {"cell_type": cell_type, "source": source}
     cell["metadata"] = create_cell_metadata(hidden)
     return cell
 
 
-def create_cell_metadata(hidden):
+def create_cell_metadata(hidden: bool) -> dict:
     return {"jupyter": {"source_hidden": hidden, "outputs_hidden": hidden}}
 
 
-def create_synapse_notebook_template():
+def create_synapse_notebook_template() -> dict:
     return {
         "name": "",
         "properties": {

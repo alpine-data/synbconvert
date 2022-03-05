@@ -4,7 +4,7 @@ from synbconvert.synbconvert import SynapseNotebookConverter
 
 
 @click.group()
-def cli():
+def cli() -> None:
     """
     Test
     """
@@ -13,7 +13,7 @@ def cli():
 @click.command()
 @click.argument("source")
 @click.argument("target")
-def convert(source, target):
+def convert(source: str, target: str) -> None:
     synapse_notebook_converter = SynapseNotebookConverter()
     if source.endswith(".py") and target.endswith(".json"):
         synapse_notebook_converter.convert_python_file_to_synapse_notebook(

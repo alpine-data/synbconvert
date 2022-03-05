@@ -1,7 +1,9 @@
 import json
 import os
 
-from behave import *
+from behave import given
+from behave import then
+from behave import when
 from behave.runner import Context
 
 from synbconvert import SynapseNotebookConverter
@@ -9,7 +11,7 @@ from synbconvert import SynapseNotebookConverter
 
 @given("we have a python file `{filename}` with the following statements")
 @given("we have a simply python file `{filename}` with the following statements")
-def step_impl(context, filename):
+def step_impl(context, filename) -> None:  # noqa: F811
     with open(f"{context.working_directory}/{filename}", "w") as f:
         f.write(context.text)
 
@@ -20,7 +22,7 @@ def step_impl(context, filename):
 @when(
     "we transform this file with `nbsynconvert to-notebook {source_file} {target_file}`."
 )
-def step_impl(context, source_file, target_file):
+def step_impl(context, source_file, target_file) -> None:  # noqa: F811
     source_file = f"{context.working_directory}/{source_file}"
     target_file = f"{context.working_directory}/{target_file}"
 
@@ -29,7 +31,7 @@ def step_impl(context, source_file, target_file):
 
 
 @when("we transform this file.")
-def step_impl(context: Context):
+def step_impl(context: Context) -> None:  # noqa: F811
     notebook_file = "nb.json"
 
     context.execute_steps(
@@ -41,7 +43,7 @@ def step_impl(context: Context):
 
 
 @then("a file `{filename}` should be created, containing a Synapse Notebook.")
-def step_impl(context):
+def step_impl(context, filename) -> None:  # noqa: F811
     # check existence
     filename = f"{context.working_directory}/{filename}"
     assert os.path.exists(filename)
@@ -56,13 +58,13 @@ def step_impl(context):
 
 
 @then("the created notebook should contain one cell.")
-def step_impl(context: Context):
+def step_impl(context: Context) -> None:  # noqa: F811
     context.execute_steps("Then the notebook should contain 1 cells.")
 
 
 @then("the notebook should contain only `{count}` cells.")
 @then("the notebook should contain `{count}` cells.")
-def step_impl(context, count):
+def step_impl(context, count) -> None:  # noqa: F811
     assert len(context.notebooks[-1]["properties"]["cells"]) == int(count)
 
     context.cells = [
@@ -71,17 +73,17 @@ def step_impl(context, count):
 
 
 @then("the first cell should contain")
-def step_impl(context: Context):
+def step_impl(context: Context) -> None:  # noqa: F811
     assert_cell_content(context, 0, context.text)
 
 
 @then("the second cell should contain")
-def step_impl(context):
+def step_impl(context) -> None:  # noqa: F811
     assert_cell_content(context, 1, context.text)
 
 
 @then("the cell should contain the content from the input file.")
-def step_impl(context):
+def step_impl(context) -> None:  # noqa: F811
     filename = f"{context.working_directory}/{context.files[-1]}"
 
     with open(filename, "r") as f:
@@ -90,6 +92,6 @@ def step_impl(context):
     assert_cell_content(context, 0, file_content)
 
 
-def assert_cell_content(context: Context, index: int, content: str):
+def assert_cell_content(context: Context, index: int, content: str) -> None:
     cell_content = context.cells[int(index) - 1]
-    assert cell_content == context.text
+    assert cell_content == content
