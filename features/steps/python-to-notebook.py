@@ -9,8 +9,8 @@ from behave.runner import Context
 from synbconvert import SynapseNotebookConverter
 
 
-@given("we have a python file `{filename}` with the following statements")
-@given("we have a simply python file `{filename}` with the following statements")
+@given("we have a Python file `{filename}` with the following statements")
+@given("we have a simply Python file `{filename}` with the following statements")
 def step_impl(context, filename) -> None:  # noqa: F811
     with open(f"{context.working_directory}/{filename}", "w") as f:
         f.write(context.text)
