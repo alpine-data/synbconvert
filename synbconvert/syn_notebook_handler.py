@@ -3,13 +3,13 @@ import os
 from typing import Dict
 from typing import List
 
-from synbconvert import utils
+# from synbconvert import utils
+from synbconvert.utils import *
 
 
 class SynapseNotebookHandler(object):
     def __init__(self) -> None:
         super(SynapseNotebookHandler, self).__init__()
-        self.cell_types = utils.CellTypes()
 
     def read_synapse_notebook(self, file: str) -> List[Dict]:
         with open(file) as f:
@@ -21,6 +21,7 @@ class SynapseNotebookHandler(object):
         cells = []
         hidden = False
         for i, line in enumerate(lines):
+<<<<<<< Updated upstream
             if line.startswith(utils.cell_begin_marker(self.cell_types.CODE)):
                 hidden = False
                 cell_type = self.cell_types.CODE
@@ -53,6 +54,36 @@ class SynapseNotebookHandler(object):
                             cell_type, lines[cell_start_index:cell_end_index], hidden
                         )
                     )
+=======
+            # print(line)
+            if line.startswith(cell_begin_marker(CellTypes.CODE)):
+
+                cell_start_index = i + 1
+            if line.startswith(cell_begin_marker(CellTypes.MARKDOWN)):
+
+                cell_start_index = i + 1
+            if line.startswith(cell_begin_marker(CellTypes.IGNORE)):
+
+                cell_start_index = i + 1
+            # if line.startswith(cell_begin_marker(CellTypes.CODE)):
+            #     hidden = False
+            #     cell_type = CellTypes.CODE
+            #     cell_start_index = i + 1
+            # if line.startswith(cell_begin_marker(CellTypes.MARKDOWN)):
+            #     hidden = False
+            #     cell_type = CellTypes.MARKDOWN
+            #     cell_start_index = i + 1
+            # if line.startswith(cell_begin_ignore_marker()):
+            #     hidden = True
+            #     cell_type = CellTypes.CODE
+            #     cell_start_index = i + 1
+            # if line.startswith(cell_end_marker(cell_type)) or line.startswith(cell_end_ignore_marker()):
+            #     cell_end_index = i
+            #     if cell_type == CellTypes.MARKDOWN:
+            #         cells.append(create_cell(cell_type, uncomment_lines(lines[cell_start_index:cell_end_index]), hidden))
+            #     else:
+            #         cells.append(create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
+>>>>>>> Stashed changes
 
         if os.path.isfile(file):
             with open(file) as f:

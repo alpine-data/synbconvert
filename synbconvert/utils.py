@@ -1,38 +1,24 @@
 from typing import List
+from enum import Enum
 
 
-class CellTypes:
-    def __init__(self, markdown: str = "markdown", code: str = "code"):
-        self.MARKDOWN = markdown
-        self.CODE = code
+class CellType(Enum):
 
-
-# TODO: Replace cell_type with Enum Type
-def cell_begin_marker(cell_type: str) -> str:
-    if cell_type == "code":
-        return "# @cell-begin-code\n"
-    elif cell_type == "markdown":
-        return "# @cell-begin-markdown\n"
-    else:
-        raise Exception("unknown cell type")
+    CODE = 1
+    MARKDOWN = 2
+    IGNORE = 3
 
 
 # TODO: Replace cell_type with Enum Type
-def cell_end_marker(cell_type: str) -> str:
-    if cell_type == "code":
-        return "# @cell-end-code\n"
-    elif cell_type == "markdown":
-        return "# @cell-end-markdown\n"
-    else:
-        raise Exception("unknown cell type")
-
-
-def cell_begin_ignore_marker() -> str:
-    return "# @cell-begin-ignore\n"
-
-
-def cell_end_ignore_marker() -> str:
-    return "# @cell-end-ignore\n"
+def cell_begin_marker(cell_type: str):
+    print(type(CellType.CODE))
+    print("sdfsdf")
+    if cell_type == CellType.CODE:
+        return '# @cell-begin-code\n'
+    if cell_type == CellType.MARKDOWN:
+        return '# @cell-begin-markdown\n'
+    if cell_type == CellType.IGNORE:
+        return '# @cell-begin-ignore\n'
 
 
 def comment_line(line: str) -> str:

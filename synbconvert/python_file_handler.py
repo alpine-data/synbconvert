@@ -1,13 +1,13 @@
-from typing import List
+from typing import Dict, List
+# TODO: check where TextIO is used
 from typing import TextIO
 
-from synbconvert import utils
+from synbconvert.utils import *
 
 
 class PythonFileHandler(object):
     def __init__(self) -> None:
         super(PythonFileHandler, self).__init__()
-        self.cell_types = utils.CellTypes()
 
     def read_python_file(self, file: str) -> List[str]:
         with open(file) as f:
@@ -17,42 +17,30 @@ class PythonFileHandler(object):
     def write_python_file(self, file: str, cells: List[dict]) -> None:
         f = open(file, "w")
         for cell in cells:
-            if cell["cell_type"] == self.cell_types.MARKDOWN:
-                self.write_markdown(f, cell, self.cell_types.MARKDOWN)
-            if cell["cell_type"] == self.cell_types.CODE:
-                self.write_code(f, cell, self.cell_types.CODE)
+            print(cell['cell_type'])
+            print(get_cell_hidden_state(cell))
+            if cell['cell_type'] == CellType.MARKDOWN:
+                self.write_cell_content(f, cell, CellType.MARKDOWN)
+            if cell['cell_type'] == CellType.CODE:
+                if get_cell_hidden_state(cell):
+                    self.write_cell_content(f, cell, CellType.IGNORE)
+                else:
+                    self.write_cell_content(f, cell, CellType.CODE)
         f.close()
 
-    def write_code(self, f: TextIO, cell: dict, cell_type: str) -> None:
-        source_lines = cell["source"]
-        hidden = get_cell_hidden_state(cell)
-        if hidden:
-            f.write(utils.cell_begin_ignore_marker())
-        else:
-            f.write(utils.cell_begin_marker(cell_type))
+    def write_cell_content(self, f, cell: Dict, cell_type: str) -> None:
+        source_lines = cell['source']
+        f.write(cell_begin_marker(cell_type))
         for line in source_lines:
-            if hidden:
-                f.write(utils.uncomment_line(line))
+            if cell_type == CellType.IGNORE:
+                f.write(uncomment_line(line))
+            elif cell_type == CellType.MARKDOWN:
+                f.write(comment_line(line))
             else:
                 f.write(line)
-        if not line.endswith("\n"):
-            f.write("\n")
-        if hidden:
-            f.write(utils.cell_end_ignore_marker())
-        else:
-            f.write(utils.cell_end_marker(cell_type))
-        f.write("\n")
-
-    def write_markdown(self, f: TextIO, cell: dict, cell_type: str) -> None:
-        source_lines = cell["source"]
-        f.write(utils.cell_begin_marker(cell_type))
-        for line in source_lines:
-            f.write(utils.comment_line(line))
-        if not line.endswith("\n"):
-            f.write("\n")
-        f.write(utils.cell_end_marker(cell_type))
-        f.write("\n")
-
+        if not line.endswith('\n'):
+            f.write('\n')
+        f.write('\n')
 
 def get_cell_hidden_state(cell: dict) -> bool:
     try:
