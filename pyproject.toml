@@ -1,12 +1,13 @@
 [tool.poetry]
-name = "synapse-nbconvert"
+name = "synbconvert"
 version = "0.1.0"
 description = "A simple command line tool to convert Python files to Synapse Notebooks and vice versa."
 authors = ["Michael Wellner <michaelwellner@kpmg.com>"]
 license = "Apache-2.0"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
+click = "^8.0.4"
 
 [tool.poetry.dev-dependencies]
 behave = "^1.2.6"
@@ -27,6 +28,9 @@ style = [
     { cmd = "flake8 features/steps" }
 ]
 test = "behave"
+
+[tool.poetry.scripts]
+synbconvert = "synbconvert.cli:cli"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
