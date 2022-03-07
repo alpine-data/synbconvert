@@ -1,3 +1,5 @@
+from hashlib import new
+import os
 from typing import Dict, List, TextIO
 
 from synbconvert import utils
@@ -9,27 +11,18 @@ class PythonFileHandler(object):
         super(PythonFileHandler, self).__init__()
 
     def read_python_file(self, file: str) -> List[str]:
+        path = os.path.dirname(file)
+        new_lines = []
         with open(file) as f:
             lines = f.readlines()
-        return lines
+        for line in lines:
+            if line.startswith('from .'):
+                filename = f'{line.split(" ")[1][1:]}.py'
+                new_lines.extend(self.read_python_file(f'{path}/{filename}'))
+            else:
+                new_lines.append(line)
+        return new_lines
 
-    # def read_python_file(self, file: str):
-    #     path = os.path.dirname(file)
-    #     new_list = []
-    #     with open(file) as f:
-    #         lines = f.readlines()
-    #         # new_list.append(line)
-    #     for line in lines:
-    #         if line.startswith('from .'):
-    #             filename = f'{line.split(" ")[1][1:]}.py'
-    #             self.read_python_file(f'{path}/{filename}')
-    #             # print(self.read_python_file(f'{path}/{filename}'))
-    #             # new_lines = insert_into_list(new_lines, self.read_python_file(f'{path}/{filename}'), i)
-    #             # print(self.new_list)
-    #         else:
-    #             self.new_list.append(line)
-    #     # lines = self.new_list
-    #     return new_list
 
     def write_python_file(self, file: str, cells: List[dict]) -> None:
         f = open(file, "w")
