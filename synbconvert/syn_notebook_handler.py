@@ -1,5 +1,6 @@
 import json
 import os
+from traceback import print_tb
 from typing import Dict
 from typing import List
 
@@ -21,50 +22,31 @@ class SynapseNotebookHandler(object):
         cells = []
         hidden = False
         for i, line in enumerate(lines):
-<<<<<<< Updated upstream
-            if line.startswith(utils.cell_begin_marker(self.cell_types.CODE)):
-                hidden = False
-                cell_type = self.cell_types.CODE
-                cell_start_index = i + 1
-            if line.startswith(utils.cell_begin_marker(self.cell_types.MARKDOWN)):
-                hidden = False
-                cell_type = self.cell_types.MARKDOWN
-                cell_start_index = i + 1
-            if line.startswith(utils.cell_begin_ignore_marker()):
-                hidden = True
-                cell_type = self.cell_types.CODE
-                cell_start_index = i + 1
-            if line.startswith(utils.cell_end_marker(cell_type)) or line.startswith(
-                utils.cell_end_ignore_marker()
-            ):
+            print(line)
+            if line.startswith(cell_begin_marker(CellType.CODE)) or line.startswith(cell_begin_marker(CellType.IGNORE)):
+                cell_type = CellType.CODE
                 cell_end_index = i
-                if cell_type == self.cell_types.MARKDOWN:
-                    cells.append(
-                        create_cell(
-                            cell_type,
-                            utils.uncomment_lines(
-                                lines[cell_start_index:cell_end_index]
-                            ),
-                            hidden,
-                        )
-                    )
-                else:
-                    cells.append(
-                        create_cell(
-                            cell_type, lines[cell_start_index:cell_end_index], hidden
-                        )
-                    )
-=======
-            # print(line)
-            if line.startswith(cell_begin_marker(CellTypes.CODE)):
-
                 cell_start_index = i + 1
-            if line.startswith(cell_begin_marker(CellTypes.MARKDOWN)):
-
+                cells.append(create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
+            if line.startswith(cell_begin_marker(CellType.MARKDOWN)):
+                cell_type = CellType.MARKDOWN
+                cell_end_index = i
                 cell_start_index = i + 1
-            if line.startswith(cell_begin_marker(CellTypes.IGNORE)):
+                cells.append(create_cell(cell_type, uncomment_lines(lines[cell_start_index:cell_end_index]), hidden))
+        print(cells)
+        if os.path.isfile(file):
+            with open(file) as f:
+                data = json.load(f)
+                data["properties"]["cells"] = cells
 
-                cell_start_index = i + 1
+            with open(file, "w") as f:
+                json.dump(data, f)
+        else:
+            data = create_synapse_notebook_template()
+            data["name"] = os.path.splitext(os.path.basename(file))[0]
+            data["properties"]["cells"] = cells
+            with open(file, "w") as f:
+                json.dump(data, f)
             # if line.startswith(cell_begin_marker(CellTypes.CODE)):
             #     hidden = False
             #     cell_type = CellTypes.CODE
@@ -83,21 +65,6 @@ class SynapseNotebookHandler(object):
             #         cells.append(create_cell(cell_type, uncomment_lines(lines[cell_start_index:cell_end_index]), hidden))
             #     else:
             #         cells.append(create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
->>>>>>> Stashed changes
-
-        if os.path.isfile(file):
-            with open(file) as f:
-                data = json.load(f)
-                data["properties"]["cells"] = cells
-
-            with open(file, "w") as f:
-                json.dump(data, f)
-        else:
-            data = create_synapse_notebook_template()
-            data["name"] = os.path.splitext(os.path.basename(file))[0]
-            data["properties"]["cells"] = cells
-            with open(file, "w") as f:
-                json.dump(data, f)
 
 
 def create_cell(cell_type: str, source: List[str], hidden: bool) -> dict:

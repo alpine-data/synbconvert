@@ -4,15 +4,12 @@ from enum import Enum
 
 class CellType(Enum):
 
-    CODE = 1
-    MARKDOWN = 2
-    IGNORE = 3
+    CODE = 'code'
+    MARKDOWN = 'markdown'
+    IGNORE = 'ignore'
 
 
-# TODO: Replace cell_type with Enum Type
-def cell_begin_marker(cell_type: str):
-    print(type(CellType.CODE))
-    print("sdfsdf")
+def cell_begin_marker(cell_type: CellType) -> str:
     if cell_type == CellType.CODE:
         return '# @cell-begin-code\n'
     if cell_type == CellType.MARKDOWN:

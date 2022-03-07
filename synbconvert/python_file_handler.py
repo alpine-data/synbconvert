@@ -1,6 +1,4 @@
-from typing import Dict, List
-# TODO: check where TextIO is used
-from typing import TextIO
+from typing import Dict, List, TextIO
 
 from synbconvert.utils import *
 
@@ -17,18 +15,17 @@ class PythonFileHandler(object):
     def write_python_file(self, file: str, cells: List[dict]) -> None:
         f = open(file, "w")
         for cell in cells:
-            print(cell['cell_type'])
-            print(get_cell_hidden_state(cell))
-            if cell['cell_type'] == CellType.MARKDOWN:
-                self.write_cell_content(f, cell, CellType.MARKDOWN)
-            if cell['cell_type'] == CellType.CODE:
+            if cell['cell_type'] == CellType.MARKDOWN.value:
+                cell_type = CellType.MARKDOWN
+            elif cell['cell_type'] == CellType.CODE.value:
                 if get_cell_hidden_state(cell):
-                    self.write_cell_content(f, cell, CellType.IGNORE)
+                    cell_type = CellType.IGNORE
                 else:
-                    self.write_cell_content(f, cell, CellType.CODE)
+                    cell_type = CellType.CODE
+            self.write_cell_content(f, cell, cell_type)
         f.close()
 
-    def write_cell_content(self, f, cell: Dict, cell_type: str) -> None:
+    def write_cell_content(self, f: TextIO, cell: Dict, cell_type: str) -> None:
         source_lines = cell['source']
         f.write(cell_begin_marker(cell_type))
         for line in source_lines:
@@ -36,7 +33,7 @@ class PythonFileHandler(object):
                 f.write(uncomment_line(line))
             elif cell_type == CellType.MARKDOWN:
                 f.write(comment_line(line))
-            else:
+            elif cell_type == CellType.CODE:
                 f.write(line)
         if not line.endswith('\n'):
             f.write('\n')
