@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 from enum import Enum
 
 
@@ -6,7 +6,6 @@ class CellType(Enum):
 
     CODE = 'code'
     MARKDOWN = 'markdown'
-    IGNORE = 'ignore'
 
 
 def cell_begin_marker(cell_type: CellType) -> str:
@@ -14,26 +13,46 @@ def cell_begin_marker(cell_type: CellType) -> str:
         return '# @cell-begin-code\n'
     if cell_type == CellType.MARKDOWN:
         return '# @cell-begin-markdown\n'
-    if cell_type == CellType.IGNORE:
-        return '# @cell-begin-ignore\n'
 
 
-def comment_line(line: str) -> str:
-    line = f"# {line}"
-    return line
+def ignore_marker() -> str:
+    return '@ignore\n'
 
 
-def uncomment_line(line: str) -> str:
-    comment_prefix = "# "
-    if line.startswith(comment_prefix):
-        return line[len(comment_prefix) :]
-    else:
-        return line
+def begin_ignore_marker() -> str:
+    return '# @begin-ignore\n'
+
+
+def end_ignore_marker() -> str:
+    return '# @end-ignore\n'
+
+
+def begin_import_marker(import_line: str) -> str:
+    return f'# @begin-import: {import_line}\n'
+
+
+def end_import_marker(import_line: str) -> str:
+    return f'# @end-import: {import_line}\n'
 
 
 def comment_lines(lines: List[str]) -> List[str]:
-    return [comment_line(line) for line in lines]
+    lines[0] = f"\"\"\"{lines[0]}"
+    lines[-1] = f"{lines[-1]}\"\"\""
+    return lines
 
 
 def uncomment_lines(lines: List[str]) -> List[str]:
-    return [uncomment_line(line) for line in lines]
+    lines[0] = lines[0].lstrip('\"')
+    lines[-1] = lines[-1].rstrip('\"')
+    lines[0] = lines[0].lstrip('\'')
+    lines[-1] = lines[-1].rstrip('\'')
+    return lines
+
+
+def clean_cells(cells: List[Dict]) -> List[Dict]:
+    for cell in cells:
+        if not cell['source']:
+            cells.remove(cell)
+        if len(cell['source']) == 1 and cell['source'][0] == '':
+            cells.remove(cell)
+    return cells
