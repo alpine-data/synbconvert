@@ -88,8 +88,8 @@ class SynapseNotebookHandler(object):
         cell_start_index = 0
 
         for i, line in enumerate(lines):
-            if (line.startswith(utils.cell_begin_marker(CellType.CODE)) or
-                utils.cell_begin_marker(CellType.MARKDOWN) in line or
+            if (line.startswith(utils.cell_marker(CellType.CODE)) or
+                utils.cell_marker(CellType.MARKDOWN) in line or
                 line.startswith(utils.begin_ignore_marker()) or
                 line.startswith(utils.end_ignore_marker())):
                 cell_end_index = i
@@ -183,7 +183,7 @@ def get_cell_type_from_marker(marker: str) -> CellType:
     :returns: The CellType of the cell marker.
     """
 
-    if utils.cell_begin_marker(CellType.MARKDOWN) in marker:
+    if utils.cell_marker(CellType.MARKDOWN) in marker:
         cell_type = CellType.MARKDOWN
     else:
         cell_type = CellType.CODE

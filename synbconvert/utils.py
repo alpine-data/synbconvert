@@ -11,7 +11,7 @@ class CellType(Enum):
     MARKDOWN = 'markdown'
 
 
-def cell_begin_marker(cell_type: CellType) -> str:
+def cell_marker(cell_type: CellType) -> str:
     """
     Creates a cell begin marker based on the type of the cell.
 

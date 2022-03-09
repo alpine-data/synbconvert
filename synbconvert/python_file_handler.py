@@ -99,10 +99,10 @@ class PythonFileHandler(object):
             cell_content_list.append('\n')
             # markdown content needs to be commented (not executable)
             if cell_type == CellType.MARKDOWN:
-                source_lines.insert(0, utils.cell_begin_marker(cell_type))
+                source_lines.insert(0, utils.cell_marker(cell_type))
                 source_lines = utils.comment_lines(source_lines)
             else:
-                cell_content_list.append(utils.cell_begin_marker(cell_type))
+                cell_content_list.append(utils.cell_marker(cell_type))
             for line in source_lines:
                 cell_content_list.append(line)
             # add line break to last line
@@ -136,6 +136,8 @@ class PythonFileHandler(object):
         f = open(file, 'w')
         # remove first line if it contains only a new line
         if lines[0] == '\n': lines.remove(lines[0])
+        # remove first line if it contains only a nb-cell marker
+        if lines[0] == utils.cell_marker(CellType.CODE): lines.remove(lines[0])
 
         it = iter(lines)
         for line in it:
