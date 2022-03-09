@@ -97,10 +97,12 @@ class PythonFileHandler(object):
         # differentiate between normal cells and ignored content
         if not cell_ignore:
             cell_content_list.append('\n')
-            cell_content_list.append(utils.cell_begin_marker(cell_type))
             # markdown content needs to be commented (not executable)
             if cell_type == CellType.MARKDOWN:
+                source_lines.insert(0, utils.cell_begin_marker(cell_type))
                 source_lines = utils.comment_lines(source_lines)
+            else:
+                cell_content_list.append(utils.cell_begin_marker(cell_type))
             for line in source_lines:
                 cell_content_list.append(line)
             # add line break to last line

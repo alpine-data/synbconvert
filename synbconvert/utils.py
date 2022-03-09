@@ -20,9 +20,9 @@ def cell_begin_marker(cell_type: CellType) -> str:
     """
 
     if cell_type == CellType.CODE:
-        return '# @cell-begin-code\n'
+        return '# nb--cell\n'
     elif cell_type == CellType.MARKDOWN:
-        return '# @cell-begin-markdown\n'
+        return 'nb--markdown\n'
     # TODO: include other cell types
 
 
@@ -33,7 +33,7 @@ def ignore_marker() -> str:
     :returns: The ignore marker.
     """
 
-    return '@ignore\n'
+    return 'nb--ignore\n'
 
 
 def begin_ignore_marker() -> str:
@@ -43,7 +43,7 @@ def begin_ignore_marker() -> str:
     :returns: The begin ignore marker.
     """
 
-    return '# @begin-ignore\n'
+    return '# nb--ignore-begin\n'
 
 
 def end_ignore_marker() -> str:
@@ -53,7 +53,7 @@ def end_ignore_marker() -> str:
     :returns: The end ignore marker.
     """
 
-    return '# @end-ignore\n'
+    return '# nb--ignore-end\n'
 
 
 def begin_import_marker(import_file: str) -> str:
@@ -64,7 +64,7 @@ def begin_import_marker(import_file: str) -> str:
     :returns: The begin import marker.
     """
 
-    return f'# @begin-import: {import_file}\n'
+    return f'# nb--import-begin {import_file}\n'
 
 
 def end_import_marker(import_file: str) -> str:
@@ -75,7 +75,7 @@ def end_import_marker(import_file: str) -> str:
     :returns: The end import marker.
     """
 
-    return f'# @end-import: {import_file}\n'
+    return f'# nb--import-end {import_file}\n'
 
 
 def comment_lines(lines: List[str]) -> List[str]:
