@@ -1,5 +1,6 @@
-from typing import Dict, List
 from enum import Enum
+from typing import Dict
+from typing import List
 
 
 class CellType(Enum):
@@ -7,8 +8,8 @@ class CellType(Enum):
     Cell types enumeration.
     """
 
-    CODE = 'code'
-    MARKDOWN = 'markdown'
+    CODE = "code"
+    MARKDOWN = "markdown"
 
 
 def cell_marker(cell_type: CellType) -> str:
@@ -20,9 +21,10 @@ def cell_marker(cell_type: CellType) -> str:
     """
 
     if cell_type == CellType.CODE:
-        return '# nb--cell\n'
+        marker = "# nb--cell\n"
     elif cell_type == CellType.MARKDOWN:
-        return 'nb--markdown\n'
+        marker = "nb--markdown\n"
+    return marker
     # TODO: include other cell types
 
 
@@ -33,7 +35,7 @@ def ignore_marker() -> str:
     :returns: The ignore marker.
     """
 
-    return 'nb--ignore\n'
+    return "nb--ignore\n"
 
 
 def begin_ignore_marker() -> str:
@@ -43,7 +45,7 @@ def begin_ignore_marker() -> str:
     :returns: The begin ignore marker.
     """
 
-    return '# nb--ignore-begin\n'
+    return "# nb--ignore-begin\n"
 
 
 def end_ignore_marker() -> str:
@@ -53,7 +55,7 @@ def end_ignore_marker() -> str:
     :returns: The end ignore marker.
     """
 
-    return '# nb--ignore-end\n'
+    return "# nb--ignore-end\n"
 
 
 def begin_import_marker(import_file: str) -> str:
@@ -86,8 +88,8 @@ def comment_lines(lines: List[str]) -> List[str]:
     :returns: The commented List of of source lines.
     """
 
-    lines[0] = f"\"\"\"{lines[0]}"
-    lines[-1] = f"{lines[-1]}\"\"\""
+    lines[0] = f'"""{lines[0]}'
+    lines[-1] = f'{lines[-1]}"""'
     return lines
 
 
@@ -99,10 +101,10 @@ def uncomment_lines(lines: List[str]) -> List[str]:
     :returns: The uncommented List of of source lines.
     """
 
-    lines[0] = lines[0].lstrip('\"')
-    lines[-1] = lines[-1].rstrip('\"')
-    lines[0] = lines[0].lstrip('\'')
-    lines[-1] = lines[-1].rstrip('\'')
+    lines[0] = lines[0].lstrip('"')
+    lines[-1] = lines[-1].rstrip('"')
+    lines[0] = lines[0].lstrip("'")
+    lines[-1] = lines[-1].rstrip("'")
     return lines
 
 
@@ -115,8 +117,8 @@ def clean_cells(cells: List[Dict]) -> List[Dict]:
     """
 
     for cell in cells:
-        if not cell['source']:
+        if not cell["source"]:
             cells.remove(cell)
-        if len(cell['source']) == 1 and cell['source'][0] == '':
+        if len(cell["source"]) == 1 and cell["source"][0] == "":
             cells.remove(cell)
     return cells

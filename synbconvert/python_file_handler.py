@@ -1,7 +1,7 @@
 import os
 import re
-
-from typing import Dict, List
+from typing import Dict
+from typing import List
 
 from synbconvert import utils
 from synbconvert.utils import CellType
@@ -18,7 +18,7 @@ class PythonFileHandler(object):
     def read_python_file(self, file: str) -> List[str]:
         """
         Reads a Python file line by line and returns all lines as a List.
-        
+
         The content of relative imports is also recursively added to the List.
         Added imports:
             from .my_module import *
@@ -39,11 +39,11 @@ class PythonFileHandler(object):
             if is_relative_full_import(line):
                 import_path = get_file_path_from_import_definition(line)
                 # join import path with relative file path
-                if file_path == '':
-                    full_path = f'.{import_path}'
+                if file_path == "":
+                    full_path = f".{import_path}"
                 else:
-                    full_path = f'./{file_path}{import_path}'
-                import_path = f'.{import_path}'
+                    full_path = f"./{file_path}{import_path}"
+                import_path = f".{import_path}"
                 new_lines.append(utils.begin_import_marker(import_path))
                 # recursively extend the current list by content of relative import
                 new_lines.extend(self.read_python_file(full_path))
@@ -97,11 +97,11 @@ class PythonFileHandler(object):
         cell_ignore = is_ignored_cell(cell)
         cell_type = get_cell_type(cell)
         cell_content_list = []
-        source_lines = cell['source']
+        source_lines = cell["source"]
 
         # differentiate between normal cells and ignored content
         if not cell_ignore:
-            cell_content_list.append('\n')
+            cell_content_list.append("\n")
             # markdown content needs to be commented (not executable)
             if cell_type == CellType.MARKDOWN:
                 source_lines.insert(0, utils.cell_marker(cell_type))
@@ -111,10 +111,10 @@ class PythonFileHandler(object):
             for line in source_lines:
                 cell_content_list.append(line)
             # add line break to last line
-            if not line.endswith('\n'):
-                cell_content_list[-1] = cell_content_list[-1] + '\n'
+            if not line.endswith("\n"):
+                cell_content_list[-1] = cell_content_list[-1] + "\n"
         else:
-            cell_content_list.append('\n')
+            cell_content_list.append("\n")
             cell_content_list.append(utils.begin_ignore_marker())
             # ignored content needs to be uncommented (commented in cell)
             source_lines = utils.uncomment_lines(source_lines)
@@ -123,15 +123,15 @@ class PythonFileHandler(object):
             for line in source_lines:
                 cell_content_list.append(line)
             # add line break to last line
-            if not line.endswith('\n'):
-                cell_content_list[-1] = cell_content_list[-1] + '\n'
+            if not line.endswith("\n"):
+                cell_content_list[-1] = cell_content_list[-1] + "\n"
             line = utils.end_ignore_marker()
             cell_content_list.append(line)
         return cell_content_list
 
     def __write_lines(self, file: str, lines: List[str]) -> None:
         """
-        Writes the given lines to the Python file. The content of relative imports is also 
+        Writes the given lines to the Python file. The content of relative imports is also
         recursively written to imported Python files.
 
         :param file: The relative path (dir + file name) of the Python file to be written.
@@ -139,13 +139,15 @@ class PythonFileHandler(object):
         """
 
         file_path = os.path.dirname(os.path.relpath(file))
-        if not file_path == '' and not os.path.exists(file_path):
-            os.makedirs(file_path) 
-        f = open(file, 'w')
+        if not file_path == "" and not os.path.exists(file_path):
+            os.makedirs(file_path)
+        f = open(file, "w")
         # remove first line if it contains only a new line
-        if lines[0] == '\n': lines.remove(lines[0])
+        if lines[0] == "\n":
+            lines.remove(lines[0])
         # remove first line if it contains only a nb-cell marker
-        if lines[0] == utils.cell_marker(CellType.CODE): lines.remove(lines[0])
+        if lines[0] == utils.cell_marker(CellType.CODE):
+            lines.remove(lines[0])
 
         it = iter(lines)
         for line in it:
@@ -154,17 +156,21 @@ class PythonFileHandler(object):
                 import_definition = get_import_definition_from_import_marker(line)
                 import_path = get_file_path_from_import_definition(import_definition)
                 # join import path with relative file path
-                if file_path == '':
-                    full_path = f'.{import_path}'
+                if file_path == "":
+                    full_path = f".{import_path}"
                 else:
-                    full_path = f'./{file_path}{import_path}'
+                    full_path = f"./{file_path}{import_path}"
                 # collect all lines of the imported file
                 for import_line in it:
                     # stop if the correct end import marker is reached
-                    if is_end_import_line(import_line) and import_definition == get_import_definition_from_import_marker(import_line):
+                    if is_end_import_line(
+                        import_line
+                    ) and import_definition == get_import_definition_from_import_marker(
+                        import_line
+                    ):
                         break
                     import_lines.append(import_line)
-                f.write(import_definition + '\n')
+                f.write(import_definition + "\n")
                 # recursively write the lines of the imported file
                 self.__write_lines(full_path, import_lines)
             else:
@@ -180,9 +186,9 @@ def get_cell_type(cell: dict) -> CellType:
     :returns: The CellType of the cell.
     """
 
-    if cell['cell_type'] == CellType.MARKDOWN.value:
+    if cell["cell_type"] == CellType.MARKDOWN.value:
         cell_type = CellType.MARKDOWN
-    elif cell['cell_type'] == CellType.CODE.value:
+    elif cell["cell_type"] == CellType.CODE.value:
         cell_type = CellType.CODE
     # TODO: handle other cell types
 
@@ -197,12 +203,13 @@ def get_file_path_from_import_definition(import_definition: str) -> str:
     :returns: The file path of the imported file.
     """
 
-    path = import_definition.split(' ')[1].replace('.', '/')
-    path = f'{os.path.dirname(path)}'
-    if path == '/' : path = ''
-    filename = import_definition.split(" ")[1].split('.')[-1]
-    filename = f'{filename}.py'
-    import_path = f'{path}/{filename}'
+    path = import_definition.split(" ")[1].replace(".", "/")
+    path = f"{os.path.dirname(path)}"
+    if path == "/":
+        path = ""
+    filename = import_definition.split(" ")[1].split(".")[-1]
+    filename = f"{filename}.py"
+    import_path = f"{path}/{filename}"
     return import_path
 
 
@@ -214,15 +221,22 @@ def get_import_definition_from_import_marker(import_marker: str) -> str:
     :returns: The restored Python import definition.
     """
 
-    module_path = import_marker.split(' ')[2].replace('"', '').replace('./', '').replace('.py', '').replace('\n', '').replace('/', '.')
-    import_definition = f'from .{module_path} import *'
+    module_path = (
+        import_marker.split(" ")[2]
+        .replace('"', "")
+        .replace("./", "")
+        .replace(".py", "")
+        .replace("\n", "")
+        .replace("/", ".")
+    )
+    import_definition = f"from .{module_path} import *"
     return import_definition
 
 
 def is_relative_full_import(line: str) -> bool:
     """
     Checks if a Python import definition is a relative full import.
-    
+
     Example of a relative full import:
         from .my_module import *
     The following imports are not relative:
@@ -235,7 +249,7 @@ def is_relative_full_import(line: str) -> bool:
     :returns: True if the import definition is a relative full import and else False.
     """
 
-    return bool(re.search('^from \.(\S)+ import \*$', line))
+    return bool(re.search(r"^from \.(\S)+ import \*$", line))
 
 
 def is_ignored_cell(cell: dict) -> bool:
@@ -246,7 +260,7 @@ def is_ignored_cell(cell: dict) -> bool:
     :returns: True if the cell contains a ignore marker and else False.
     """
 
-    if utils.uncomment_lines(cell['source'])[0] == utils.ignore_marker():
+    if utils.uncomment_lines(cell["source"])[0] == utils.ignore_marker():
         return True
     else:
         return False
@@ -260,7 +274,7 @@ def is_begin_import_line(line: str) -> bool:
     :returns: True if the line contains a begin import marker and else False.
     """
 
-    if line.startswith(utils.begin_import_marker('')[:-3]):
+    if line.startswith(utils.begin_import_marker("")[:-3]):
         return True
     else:
         return False
@@ -274,7 +288,7 @@ def is_end_import_line(line: str) -> bool:
     :returns: True if the line contains a end import marker and else False.
     """
 
-    if line.startswith(utils.end_import_marker('')[:-3]):
+    if line.startswith(utils.end_import_marker("")[:-3]):
         return True
     else:
         return False

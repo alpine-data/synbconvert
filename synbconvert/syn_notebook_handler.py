@@ -1,7 +1,7 @@
 import json
 import os
-
-from typing import Dict, List
+from typing import Dict
+from typing import List
 
 from synbconvert import utils
 from synbconvert.utils import CellType
@@ -88,20 +88,30 @@ class SynapseNotebookHandler(object):
         cell_start_index = 0
 
         for i, line in enumerate(lines):
-            if (line.startswith(utils.cell_marker(CellType.CODE)) or
-                utils.cell_marker(CellType.MARKDOWN) in line or
-                line.startswith(utils.begin_ignore_marker()) or
-                line.startswith(utils.end_ignore_marker())):
+            if (
+                line.startswith(utils.cell_marker(CellType.CODE))
+                or utils.cell_marker(CellType.MARKDOWN) in line
+                or line.startswith(utils.begin_ignore_marker())
+                or line.startswith(utils.end_ignore_marker())
+            ):
                 cell_end_index = i
                 # ignore first line marker
                 if i > 0:
-                    cells.append(self.__create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
+                    cells.append(
+                        self.__create_cell(
+                            cell_type, lines[cell_start_index:cell_end_index], hidden
+                        )
+                    )
                 cell_start_index = i + 1
                 cell_type = get_cell_type_from_marker(line)
                 hidden = get_cell_hidden_state_from_marker(line)
         # append last cell
         cell_end_index = i + 1
-        cells.append(self.__create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
+        cells.append(
+            self.__create_cell(
+                cell_type, lines[cell_start_index:cell_end_index], hidden
+            )
+        )
         return cells
 
     @staticmethod
@@ -119,14 +129,11 @@ class SynapseNotebookHandler(object):
         if cell_type == CellType.MARKDOWN:
             # markdown needs to be uncommented in the cell
             source = utils.uncomment_lines(source)
-        if hidden == True:
+        if hidden:
             # ignore marker needs to be added in the cell
             source.insert(0, utils.ignore_marker())
             source = utils.comment_lines(source)
-        cell: dict = {
-            "cell_type": cell_type.value, 
-            "source": source
-        }
+        cell: dict = {"cell_type": cell_type.value, "source": source}
         cell["metadata"] = create_cell_metadata(hidden)
         return cell
 
@@ -141,13 +148,13 @@ def clean_source(source: List[str]) -> List[str]:
 
     # remove leading new lines
     for i in range(len(source)):
-        if source[i] == '\n':
+        if source[i] == "\n":
             continue
         else:
             break
     # remove ending new lines
     for j in range(len(source)):
-        if source[::-1][j] == '\n':
+        if source[::-1][j] == "\n":
             continue
         else:
             break
@@ -155,7 +162,7 @@ def clean_source(source: List[str]) -> List[str]:
         source = source[i:-j]
     # remove new line in last line
     if source:
-        source[-1] = source[-1].rstrip('\n')
+        source[-1] = source[-1].rstrip("\n")
     return source
 
 
@@ -167,12 +174,7 @@ def create_cell_metadata(hidden: bool) -> dict:
     :returns: The metadata Dict of a Synapse notebook cell.
     """
 
-    return {
-        "jupyter": {
-            "source_hidden": hidden, 
-            "outputs_hidden": hidden
-        }
-    }
+    return {"jupyter": {"source_hidden": hidden, "outputs_hidden": hidden}}
 
 
 def get_cell_type_from_marker(marker: str) -> CellType:
