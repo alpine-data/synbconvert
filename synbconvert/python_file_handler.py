@@ -31,18 +31,23 @@ class PythonFileHandler(object):
         :returns: The list of all lines which are contained in the Python file.
         """
 
-        path = os.path.dirname(file)
         new_lines = []
+        file_path = os.path.dirname(os.path.relpath(file))
         with open(file) as f:
             lines = f.readlines()
         for line in lines:
             if is_relative_full_import(line):
-                filename = f'{line.split(" ")[1][1:]}.py'
-                full_path = f'{path}/{filename}'
-                new_lines.append(utils.begin_import_marker(full_path))
+                import_path = get_file_path_from_import_definition(line)
+                # join import path with relative file path
+                if file_path == '':
+                    full_path = f'.{import_path}'
+                else:
+                    full_path = f'./{file_path}{import_path}'
+                import_path = f'.{import_path}'
+                new_lines.append(utils.begin_import_marker(import_path))
                 # recursively extend the current list by content of relative import
                 new_lines.extend(self.read_python_file(full_path))
-                new_lines.append(utils.end_import_marker(full_path))
+                new_lines.append(utils.end_import_marker(import_path))
             else:
                 new_lines.append(line)
         return new_lines
@@ -133,6 +138,9 @@ class PythonFileHandler(object):
         :param lines: The List of lines to be written to the Python file.
         """
 
+        file_path = os.path.dirname(os.path.relpath(file))
+        if not file_path == '' and not os.path.exists(file_path):
+            os.makedirs(file_path) 
         f = open(file, 'w')
         # remove first line if it contains only a new line
         if lines[0] == '\n': lines.remove(lines[0])
@@ -143,17 +151,17 @@ class PythonFileHandler(object):
         for line in it:
             if is_begin_import_line(line):
                 import_lines = []
-                import_definition = get_import_definition_from_path(line)
-                path = os.path.dirname(file)
-                file_name = get_file_name_from_import_marker(line)
-                if path == '' or path == '.':
-                    full_path = f'./{file_name}'
+                import_definition = get_import_definition_from_import_marker(line)
+                import_path = get_file_path_from_import_definition(import_definition)
+                # join import path with relative file path
+                if file_path == '':
+                    full_path = f'.{import_path}'
                 else:
-                    full_path = f'./{path}/{file_name}'
+                    full_path = f'./{file_path}{import_path}'
                 # collect all lines of the imported file
                 for import_line in it:
                     # stop if the correct end import marker is reached
-                    if is_end_import_line(import_line) and import_definition == get_import_definition_from_path(import_line):
+                    if is_end_import_line(import_line) and import_definition == get_import_definition_from_import_marker(import_line):
                         break
                     import_lines.append(import_line)
                 f.write(import_definition + '\n')
@@ -181,29 +189,33 @@ def get_cell_type(cell: dict) -> CellType:
     return cell_type
 
 
-def get_file_name_from_import_marker(import_marker: str) -> str:
+def get_file_path_from_import_definition(import_definition: str) -> str:
     """
-    Determines the file name contained in a import marker.
+    Determines the file path of an imported file from a Python import definition.
 
-    :param import_marker: The line which contains the import marker.
-    :returns: The file name contained in the import marker.
+    :param import_marker: The line which contains the Python import definition.
+    :returns: The file path of the imported file.
     """
 
-    begin_import_string = utils.begin_import_marker('')[:-1]
-    end_import_string = utils.end_import_marker('')[:-1]
-    return os.path.basename(import_marker.replace(begin_import_string, '').replace(end_import_string, '').replace('\n', ''))
+    path = import_definition.split(' ')[1].replace('.', '/')
+    path = f'{os.path.dirname(path)}'
+    if path == '/' : path = ''
+    filename = import_definition.split(" ")[1].split('.')[-1]
+    filename = f'{filename}.py'
+    import_path = f'{path}/{filename}'
+    return import_path
 
 
-def get_import_definition_from_path(path: str) -> str:
+def get_import_definition_from_import_marker(import_marker: str) -> str:
     """
-    Restores a Python import definition from a given path.
+    Restores a Python import definition from a given import marker.
 
-    :param path: The path of the Python file to be imported.
+    :param import_marker: The import marker String containing the path to be imported.
     :returns: The restored Python import definition.
     """
 
-    filename = path.split('/')[-1].replace('.py', '').replace('\n', '')
-    import_definition = f'from .{filename} import *'
+    module_path = import_marker.split(' ')[2].replace('"', '').replace('./', '').replace('.py', '').replace('\n', '').replace('/', '.')
+    import_definition = f'from .{module_path} import *'
     return import_definition
 
 
@@ -248,7 +260,7 @@ def is_begin_import_line(line: str) -> bool:
     :returns: True if the line contains a begin import marker and else False.
     """
 
-    if line.startswith(utils.begin_import_marker('')[:-1]):
+    if line.startswith(utils.begin_import_marker('')[:-3]):
         return True
     else:
         return False
@@ -262,7 +274,7 @@ def is_end_import_line(line: str) -> bool:
     :returns: True if the line contains a end import marker and else False.
     """
 
-    if line.startswith(utils.end_import_marker('')[:-1]):
+    if line.startswith(utils.end_import_marker('')[:-3]):
         return True
     else:
         return False

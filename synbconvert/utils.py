@@ -64,7 +64,7 @@ def begin_import_marker(import_file: str) -> str:
     :returns: The begin import marker.
     """
 
-    return f'# nb--import-begin {import_file}\n'
+    return f'# nb--import-begin "{import_file}"\n'
 
 
 def end_import_marker(import_file: str) -> str:
@@ -75,7 +75,7 @@ def end_import_marker(import_file: str) -> str:
     :returns: The end import marker.
     """
 
-    return f'# nb--import-end {import_file}\n'
+    return f'# nb--import-end "{import_file}"\n'
 
 
 def comment_lines(lines: List[str]) -> List[str]:
