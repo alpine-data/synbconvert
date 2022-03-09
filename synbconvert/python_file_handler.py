@@ -63,11 +63,11 @@ class PythonFileHandler(object):
         cells = utils.clean_cells(cells)
         lines = []
         for cell in cells:
-            lines.extend(self.cell_content_to_list(cell))
-        self.write_lines(file, lines)
+            lines.extend(self.__cell_content_to_list(cell))
+        self.__write_lines(file, lines)
 
-
-    def cell_content_to_list(self, cell: Dict) -> List[str]:
+    @staticmethod
+    def __cell_content_to_list(cell: Dict) -> List[str]:
         """
         Returns source of a Synapse notebook cell and also adds markers and formatting.
 
@@ -121,8 +121,8 @@ class PythonFileHandler(object):
             line = utils.end_ignore_marker()
             cell_content_list.append(line)
         return cell_content_list
-    
-    def write_lines(self, file: str, lines: List[str]) -> None:
+
+    def __write_lines(self, file: str, lines: List[str]) -> None:
         """
         Writes the given lines to the Python file. The content of relative imports is also 
         recursively written to imported Python files.
@@ -154,7 +154,7 @@ class PythonFileHandler(object):
                     import_lines.append(import_line)
                 f.write(import_definition + '\n')
                 # recursively write the lines of the imported file
-                self.write_lines(full_path, import_lines)
+                self.__write_lines(full_path, import_lines)
             else:
                 f.write(line)
         f.close()

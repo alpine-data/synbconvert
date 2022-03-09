@@ -55,7 +55,7 @@ class SynapseNotebookHandler(object):
         :param lines: The List that contains lines from a Python file.
         """
 
-        cells = self.create_cells(lines)
+        cells = self.__create_cells(lines)
         cells = utils.clean_cells(cells)
 
         # write cells to existing notebook if the notebook already exists
@@ -73,7 +73,7 @@ class SynapseNotebookHandler(object):
             with open(file, "w") as f:
                 json.dump(data, f)
 
-    def create_cells(self, lines: List[str]) -> List[Dict]:
+    def __create_cells(self, lines: List[str]) -> List[Dict]:
         """
         Creates Synapse notebook cells from a List of lines. The List of lines should contain markers.
 
@@ -95,16 +95,17 @@ class SynapseNotebookHandler(object):
                 cell_end_index = i
                 # ignore first line marker
                 if i > 0:
-                    cells.append(self.create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
+                    cells.append(self.__create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
                 cell_start_index = i + 1
                 cell_type = get_cell_type_from_marker(line)
                 hidden = get_cell_hidden_state_from_marker(line)
         # append last cell
         cell_end_index = i + 1
-        cells.append(self.create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
+        cells.append(self.__create_cell(cell_type, lines[cell_start_index:cell_end_index], hidden))
         return cells
 
-    def create_cell(self, cell_type: CellType, source: List[str], hidden: bool) -> dict:
+    @staticmethod
+    def __create_cell(cell_type: CellType, source: List[str], hidden: bool) -> dict:
         """
         Creates a Synapse notebook cell from a List of lines that defines the cell.
 
@@ -114,7 +115,7 @@ class SynapseNotebookHandler(object):
         :returns: The Synapse notebook cell.
         """
 
-        source = self.clean_source(source)
+        source = clean_source(source)
         if cell_type == CellType.MARKDOWN:
             # markdown needs to be uncommented in the cell
             source = utils.uncomment_lines(source)
@@ -130,32 +131,32 @@ class SynapseNotebookHandler(object):
         return cell
 
 
-    def clean_source(self, source: List[str]) -> List[str]:
-        """
-        Cleans the source content of a Synapse notebook cell.
+def clean_source(source: List[str]) -> List[str]:
+    """
+    Cleans the source content of a Synapse notebook cell.
 
-        :param source: The source content of the cell.
-        :returns: The cleaned source content of the cell.
-        """
+    :param source: The source content of the cell.
+    :returns: The cleaned source content of the cell.
+    """
 
-        # remove leading new lines
-        for i in range(len(source)):
-            if source[i] == '\n':
-                continue
-            else:
-                break
-        # remove ending new lines
-        for j in range(len(source)):
-            if source[::-1][j] == '\n':
-                continue
-            else:
-                break
-        if i != 0 or j != 0:
-            source = source[i:-j]
-        # remove new line in last line
-        if source:
-            source[-1] = source[-1].rstrip('\n')
-        return source
+    # remove leading new lines
+    for i in range(len(source)):
+        if source[i] == '\n':
+            continue
+        else:
+            break
+    # remove ending new lines
+    for j in range(len(source)):
+        if source[::-1][j] == '\n':
+            continue
+        else:
+            break
+    if i != 0 or j != 0:
+        source = source[i:-j]
+    # remove new line in last line
+    if source:
+        source[-1] = source[-1].rstrip('\n')
+    return source
 
 
 def create_cell_metadata(hidden: bool) -> dict:
