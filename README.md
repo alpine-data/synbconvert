@@ -76,7 +76,6 @@ The easy CLI can be used as follows:
 
 ```console
 $ synbconvert convert <your_source_file_path> <your_target_file_path>
-cd
 ```
 
 ## Development
