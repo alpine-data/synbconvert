@@ -130,7 +130,6 @@ class SynapseNotebookHandler(object):
             # markdown needs to be uncommented in the cell
             source = utils.uncomment_lines(source)
             source = clean_source(source)
-            print(source)
         if hidden:
             # ignore marker needs to be added in the cell
             source.insert(0, utils.ignore_marker())

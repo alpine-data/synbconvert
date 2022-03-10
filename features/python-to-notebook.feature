@@ -22,7 +22,7 @@ Feature: Python to Synapse Notebooks.
             my_string = "Stop War!"
             print(my_string*n)
             """
-        When we transform this file.
+        When we transform this Python file.
         Then the notebook should contain 2 cells.
         And the first cell should contain:
             """
@@ -47,7 +47,7 @@ Feature: Python to Synapse Notebooks.
             my_string = "Stop War!"
             print(my_string*n)
             """
-        When we transform this file.
+        When we transform this Python file.
         Then the notebook should contain 2 cells.
 
 
@@ -66,7 +66,7 @@ Feature: Python to Synapse Notebooks.
             my_string = "Stop War!"
             print(my_string*n)
             '''
-        When we transform this file.
+        When we transform this Python file.
         Then the notebook should contain 3 cells.
         And the first cell should be a Python cell with the following content:
             '''
@@ -99,7 +99,7 @@ Feature: Python to Synapse Notebooks.
             my_string = "Stop War!"
             print(my_string*n)
             """
-        When we transform this file.
+        When we transform this Python file.
         Then the notebook should contain 3 cells.
         And the second cell should be a Markdown cell with the following content:
             """
