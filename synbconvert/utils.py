@@ -100,7 +100,7 @@ def uncomment_lines(lines: List[str]) -> List[str]:
     :param lines: The source lines to be uncommented.
     :returns: The uncommented List of of source lines.
     """
-
+    
     lines[0] = lines[0].lstrip('"')
     lines[-1] = lines[-1].rstrip('"')
     lines[0] = lines[0].lstrip("'")
