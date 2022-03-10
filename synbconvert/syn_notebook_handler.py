@@ -124,7 +124,7 @@ class SynapseNotebookHandler(object):
         :param hidden: The flag that determines whether a cell is hidden or not.
         :returns: The Synapse notebook cell.
         """
-
+        
         source = clean_source(source)
         if cell_type == CellType.MARKDOWN:
             # markdown needs to be uncommented in the cell
@@ -152,14 +152,17 @@ def clean_source(source: List[str]) -> List[str]:
             continue
         else:
             break
+    source = source[i:]
+
     # remove ending new lines
     for j in range(len(source)):
         if source[::-1][j] == "\n":
             continue
         else:
             break
-    if i != 0 or j != 0:
-        source = source[i:-j]
+    if j > 0:
+        source = source[:-j]
+
     # remove new line in last line
     if source:
         source[-1] = source[-1].rstrip("\n")
