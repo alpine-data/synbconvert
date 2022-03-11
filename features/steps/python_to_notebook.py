@@ -37,17 +37,8 @@ def step_impl(context, source_file, target_file) -> None:  # noqa: F811
     source_file = f"{context.working_directory}/{source_file}"
     target_file = f"{context.working_directory}/{target_file}"
 
-    converter = SynapseNotebookConverter()
-
-    if source_file.endswith(".py") and target_file.endswith(".json"):
-        converter.convert_python_file_to_synapse_notebook(
-            source_file, target_file
-        )
-
-    if source_file.endswith(".json") and target_file.endswith(".py"):
-        converter.convert_synapse_notebook_to_python_file(
-            source_file, target_file
-        )
+    synapse_notebook_converter = SynapseNotebookConverter()
+    synapse_notebook_converter.convert(source_file, target_file)
 
 
 @when("we transform this Python file.")

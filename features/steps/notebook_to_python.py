@@ -7,6 +7,7 @@ from behave import when
 from behave.runner import Context
 
 from synbconvert import SynapseNotebookConverter
+from synbconvert.syn_notebook_handler import create_cell_metadata, create_synapse_notebook_template
 
 
 @given("we have a Synapse notebook file with the name `{filename}`")
@@ -66,7 +67,7 @@ def step_impl(context: Context) -> None:  # noqa: F811
 
 def append_text_as_cell_to_file(text: str, file: str, cell_type: str, hidden: bool = False):
     cell: dict = {"cell_type": cell_type, "source": [e + '\n' for e in text.split('\n') if e]}
-    cell["metadata"] = {"jupyter": {"source_hidden": hidden, "outputs_hidden": hidden}}
+    cell["metadata"] = create_cell_metadata(True)
 
     with open(file) as f:
         data = json.load(f)
@@ -74,34 +75,3 @@ def append_text_as_cell_to_file(text: str, file: str, cell_type: str, hidden: bo
 
     with open(file, "w") as f:
         json.dump(data, f)
-
-
-def create_synapse_notebook_template() -> dict:
-    return {
-        "name": "",
-        "properties": {
-            "nbformat": 4,
-            "nbformat_minor": 2,
-            "sessionProperties": {
-                "driverMemory": "28g",
-                "driverCores": 4,
-                "executorMemory": "28g",
-                "executorCores": 4,
-                "numExecutors": 2,
-                "conf": {
-                    "spark.dynamicAllocation.enabled": "false",
-                    "spark.dynamicAllocation.minExecutors": "2",
-                    "spark.dynamicAllocation.maxExecutors": "2",
-                    "spark.autotune.trackingId": "",
-                },
-            },
-            "metadata": {
-                "saveOutput": True,
-                "enableDebugMode": False,
-                "kernelspec": {"name": "synapse_pyspark", "display_name": "python"},
-                "language_info": {"name": "python"},
-                "sessionKeepAliveTimeout": 30,
-            },
-            "cells": [],
-        },
-    }
