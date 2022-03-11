@@ -20,7 +20,6 @@ def step_impl(context, filename) -> None:  # noqa: F811
 
 @given("the {counter} cell is a Python cell with the following content")
 def step_impl(context, counter) -> None:  # noqa: F811
-    print(context.text)
     file = f"{context.working_directory}/{context.files[-1]}"
     append_text_as_cell_to_file(context.text, file, 'code')
 
@@ -49,11 +48,7 @@ def step_impl(context, filename) -> None:  # noqa: F811
 @then("the Python file should contain")
 def step_impl(context) -> None:  # noqa: F811
     file_content = "".join(context.file_contents[-1])
-    expected_file_content = context.text.replace("\\\"", "\"") + "\n"
-    print(repr(file_content))
-    print(repr(expected_file_content))
-    # cannot add new line at the end in feature
-    assert file_content == context.text.replace("\\\"", "\"") + "\n", "The file content is not correct."
+    assert file_content == context.text, "The file content is not correct."
 
 
 @when("we transform this notebook file.")

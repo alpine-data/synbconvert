@@ -8,6 +8,13 @@ from behave.runner import Context
 
 from synbconvert import SynapseNotebookConverter
 
+nth_dict = {
+    "first": 1,
+    "second": 2,
+    "third": 3,
+    "4th": 4
+}
+
 
 @given("we have a Python file `{filename}` with the following statements")
 @given("we have a simple Python file `{filename}` with the following statements")
@@ -19,9 +26,8 @@ def step_impl(context, filename) -> None:  # noqa: F811
     context.files.append(filename)
 
 
-@when(
-    "we transform this file with `synbconvert convert {source_file} {target_file}`."
-)
+@when("we transform this file with `synbconvert convert {source_file} {target_file}`.")
+@when("we transform the notebook with `synbconvert convert {source_file} {target_file}`.")
 def step_impl(context, source_file, target_file) -> None:  # noqa: F811
     source_file = f"{context.working_directory}/{source_file}"
     target_file = f"{context.working_directory}/{target_file}"
@@ -67,6 +73,10 @@ def step_impl(context, filename) -> None:  # noqa: F811
     # store notebook in context for later use
     context.notebooks.append(notebook)
 
+    context.cells = [
+        cell for cell in context.notebooks[-1]["properties"]["cells"]
+    ]
+
 
 @then("the created notebook should contain one cell.")
 def step_impl(context: Context) -> None:  # noqa: F811
@@ -84,14 +94,10 @@ def step_impl(context, count) -> None:  # noqa: F811
     ]
 
 
-@then("the first cell should contain")
-def step_impl(context: Context) -> None:  # noqa: F811dsf
-    assert_cell_content(context, -2, context.text)
-
-
-@then("the second cell should contain")
-def step_impl(context) -> None:  # noqa: F811
-    assert_cell_content(context, -1, context.text)
+@then("the {nth} cell should contain")
+def step_impl(context: Context, nth: str) -> None:  # noqa: F811dsf
+    index = nth_dict[nth] - 1
+    assert_cell_content(context, index, context.text)
 
 
 @then("the cell should contain the content from the input file.")
@@ -104,25 +110,12 @@ def step_impl(context) -> None:  # noqa: F811
     assert_cell_content(context, -1, file_content)
 
 
-@then("the first cell should be a {type} cell with the following content")
-def step_impl(context, type: str):
+@then("the {nth} cell should be a {type} cell with the following content")
+def step_impl(context, nth: str, type: str):
+    index = nth_dict[nth] - 1
     expected_type = get_cell_type_from_string(type)
-    assert_cell_type(context, -3, expected_type)
-    assert_cell_content(context, -3, context.text)
-
-
-@then("the second cell should be a {type} cell with the following content")
-def step_impl(context, type: str):
-    expected_type = get_cell_type_from_string(type)
-    assert_cell_type(context, -2, expected_type)
-    assert_cell_content(context, -2, context.text)
-
-
-@then("the third cell should be a {type} cell with the following content")
-def step_impl(context, type: str):
-    expected_type = get_cell_type_from_string(type)
-    assert_cell_type(context, -1, expected_type)
-    assert_cell_content(context, -1, context.text)
+    assert_cell_type(context, index, expected_type)
+    assert_cell_content(context, index, context.text)
 
 
 def get_cell_type_from_string(type_sting: str) -> str:
@@ -135,11 +128,9 @@ def get_cell_type_from_string(type_sting: str) -> str:
 
 def assert_cell_type(context: Context, index: int, type: str) -> None:
     cell_type = context.cells[index]["cell_type"]
-    # TODO: write assert statement
     assert cell_type == type, "The cell type is not correct."
 
 
 def assert_cell_content(context: Context, index: int, content: str) -> None:
     cell_content = "".join(context.cells[index]["source"])
-    # TODO: write assert statement
     assert cell_content == content, "The cell content is not correct."

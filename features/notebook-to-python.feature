@@ -18,18 +18,19 @@ Feature: Synapse Notebook to Python file.
         When we transform this file with `synbconvert convert input.json output.py`.
         Then a file `output.py` should be created.
         And the file should contain:
-            """
-            \"\"\"nb--markdown
+            '''
+            """nb--markdown
             # Peace!
             Could we please stop this insane war?
-            \"\"\"
+            """
 
             # nb--cell
             print('Stop Putin!')
 
             # nb--cell
             print('Stop war!')
-            """
+
+            '''
 
     Scenario: Empty cells should be ignored.
         Given we have a Synapse notebook file with the name `input.json`
@@ -52,15 +53,16 @@ Feature: Synapse Notebook to Python file.
             """
         When we transform this notebook file.
         Then the file should contain:
-            """
-            \"\"\"nb--markdown
+            '''
+            """nb--markdown
             # Peace!
             Could we please stop this insane war?
-            \"\"\"
+            """
 
             # nb--cell
             print('Stop Putin!')
 
             # nb--cell
             print('Stop war!')
-            """
+
+            '''
