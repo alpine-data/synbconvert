@@ -25,8 +25,5 @@ def step_impl(context, output, input) -> None:  # noqa: F811
 
     with open(output_path) as f:
         output_lines = f.readlines()
-
-    print(input_lines)
-    print(output_lines)
     
     assert input_lines == output_lines, "The files do not match."

@@ -34,7 +34,7 @@ def step_impl(context, counter) -> None:  # noqa: F811
 def step_impl(context, filename) -> None:  # noqa: F811
     # check existence
     filename = f"{context.working_directory}/{filename}"
-    assert os.path.exists(filename), f"The Python file {filename} does not exist."
+    assert os.path.exists(filename), f"The file {filename} does not exist."
 
     # check if it is a notebook - or, at least a json file with a name attribute ...
     with open(filename, "r") as f:
@@ -48,7 +48,6 @@ def step_impl(context, filename) -> None:  # noqa: F811
 @then("the Python file should contain")
 def step_impl(context) -> None:  # noqa: F811
     file_content = "".join(context.file_contents[-1])
-    print(file_content)
     assert file_content == context.text, "The file content is not correct."
 
 
