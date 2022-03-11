@@ -41,5 +41,6 @@ Feature: Ignore lines from Python file in Notebook
             # nb--ignore-begin
             import sys
             # nb--ignore-end
+            
             '''
             
