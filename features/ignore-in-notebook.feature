@@ -14,12 +14,11 @@ Feature: Ignore lines from Python file in Notebook
             '''
 
         When we transform this file.
-        Then the notebook should contain `2` cells.
+        Then the notebook should contain 2 cells.
         And the first cell should contain:
             '''
             """nb--ignore
-            import sys
-            """
+            import sys"""
             '''
         And the first cell should be hidden.
         And the second cell should contain:

@@ -4,7 +4,6 @@ import readline
 from behave import given
 from behave import then
 from behave import when
-from behave import use_step_matcher
 from behave.runner import Context
 
 from synbconvert import SynapseNotebookConverter
@@ -21,6 +20,7 @@ def step_impl(context, filename) -> None:  # noqa: F811
 
 @given("the {counter} cell is a Python cell with the following content")
 def step_impl(context, counter) -> None:  # noqa: F811
+    print(context.text)
     file = f"{context.working_directory}/{context.files[-1]}"
     append_text_as_cell_to_file(context.text, file, 'code')
 
@@ -46,6 +46,7 @@ def step_impl(context, filename) -> None:  # noqa: F811
 
 
 @then("the file should contain")
+@then("the Python file should contain")
 def step_impl(context) -> None:  # noqa: F811
     file_content = "".join(context.file_contents[-1])
     expected_file_content = context.text.replace("\\\"", "\"") + "\n"
@@ -56,6 +57,7 @@ def step_impl(context) -> None:  # noqa: F811
 
 
 @when("we transform this notebook file.")
+@when("we transform this notebook.")
 def step_impl(context: Context) -> None:  # noqa: F811
     python_file = "output.py"
 

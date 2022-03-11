@@ -40,6 +40,7 @@ def step_impl(context, source_file, target_file) -> None:  # noqa: F811
 
 
 @when("we transform this Python file.")
+@when("we transform this file.")
 def step_impl(context: Context) -> None:  # noqa: F811
     notebook_file = "output.json"
 
@@ -139,5 +140,6 @@ def assert_cell_type(context: Context, index: int, type: str) -> None:
 
 def assert_cell_content(context: Context, index: int, content: str) -> None:
     cell_content = "".join(context.cells[index]["source"])
+    print(cell_content)
     # TODO: write assert statement
     assert cell_content == content, "The cell content is not correct."
