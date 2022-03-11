@@ -1,4 +1,3 @@
-from enum import Enum
 import json
 import os
 
@@ -9,12 +8,7 @@ from behave.runner import Context
 
 from synbconvert import SynapseNotebookConverter
 
-nth_dict = {
-    "first": 1,
-    "second": 2,
-    "third": 3,
-    "4th": 4
-}
+nth_dict = {"first": 1, "second": 2, "third": 3, "4th": 4}
 
 
 @given("we have a Python file `{filename}` with the following statements")
@@ -32,7 +26,9 @@ def step_impl(context, filename) -> None:  # noqa: F811
 
 
 @when("we transform this file with `synbconvert convert {source_file} {target_file}`.")
-@when("we transform the notebook with `synbconvert convert {source_file} {target_file}`.")
+@when(
+    "we transform the notebook with `synbconvert convert {source_file} {target_file}`."
+)
 def step_impl(context, source_file, target_file) -> None:  # noqa: F811
     source_file = f"{context.working_directory}/{source_file}"
     target_file = f"{context.working_directory}/{target_file}"
@@ -64,14 +60,14 @@ def step_impl(context, filename) -> None:  # noqa: F811
     # check if it is a notebook - or, at least a json file with a name attribute ...
     with open(filename, "r") as f:
         notebook = json.load(f)
-    assert notebook["name"] is not None, f"The file {filename} is not a valid Synapse notebook."
+    assert (
+        notebook["name"] is not None
+    ), f"The file {filename} is not a valid Synapse notebook."
 
     # store notebook in context for later use
     context.notebooks.append(notebook)
 
-    context.cells = [
-        cell for cell in context.notebooks[-1]["properties"]["cells"]
-    ]
+    context.cells = [cell for cell in context.notebooks[-1]["properties"]["cells"]]
 
 
 @then("the created notebook should contain one cell.")
@@ -83,15 +79,15 @@ def step_impl(context: Context) -> None:  # noqa: F811
 def step_impl(context, count) -> None:  # noqa: F811
     exspected_count = int(count)
     actual_count = len(context.notebooks[-1]["properties"]["cells"])
-    assert actual_count == exspected_count, f"The notebook contains {actual_count} cells. Expected would be {exspected_count}."
+    assert (
+        actual_count == exspected_count
+    ), f"The notebook contains {actual_count} cells. Expected would be {exspected_count}."
 
-    context.cells = [
-        cell for cell in context.notebooks[-1]["properties"]["cells"]
-    ]
+    context.cells = [cell for cell in context.notebooks[-1]["properties"]["cells"]]
 
 
 @then("the {nth} cell should contain")
-def step_impl(context: Context, nth: str) -> None:  # noqa: F811dsf
+def step_impl(context: Context, nth: str) -> None:  # noqa: F811
     index = nth_dict[nth] - 1
     assert_cell_content(context, index, context.text)
 
@@ -107,7 +103,7 @@ def step_impl(context) -> None:  # noqa: F811
 
 
 @then("the {nth} cell should be a {type} cell with the following content")
-def step_impl(context, nth: str, type: str):
+def step_impl(context, nth: str, type: str):  # noqa: F811
     index = nth_dict[nth] - 1
     expected_type = get_cell_type_from_string(type)
     assert_cell_type(context, index, expected_type)

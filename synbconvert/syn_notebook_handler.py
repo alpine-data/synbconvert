@@ -124,7 +124,7 @@ class SynapseNotebookHandler(object):
         :param hidden: The flag that determines whether a cell is hidden or not.
         :returns: The Synapse notebook cell.
         """
-        
+
         source = clean_source(source)
         if cell_type == CellType.MARKDOWN:
             # markdown needs to be uncommented in the cell

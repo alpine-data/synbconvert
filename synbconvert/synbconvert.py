@@ -44,11 +44,7 @@ class SynapseNotebookConverter(SynapseNotebookHandler, PythonFileHandler):
         :param target: The path of the resulting file.
         """
         if source.endswith(".py") and target.endswith(".json"):
-            self.convert_python_file_to_synapse_notebook(
-                source, target
-            )
+            self.convert_python_file_to_synapse_notebook(source, target)
 
         if source.endswith(".json") and target.endswith(".py"):
-            self.convert_synapse_notebook_to_python_file(
-                source, target
-            )
+            self.convert_synapse_notebook_to_python_file(source, target)
