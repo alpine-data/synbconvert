@@ -18,7 +18,8 @@ Feature: Ignore lines from Python file in Notebook
         And the first cell should contain:
             '''
             """nb--ignore
-            import sys"""
+            import sys
+            """
             '''
         And the first cell should be hidden.
         And the second cell should contain:

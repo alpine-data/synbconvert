@@ -48,6 +48,7 @@ def step_impl(context, filename) -> None:  # noqa: F811
 @then("the Python file should contain")
 def step_impl(context) -> None:  # noqa: F811
     file_content = "".join(context.file_contents[-1])
+    print(file_content)
     assert file_content == context.text, "The file content is not correct."
 
 

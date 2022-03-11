@@ -89,6 +89,8 @@ def comment_lines(lines: List[str]) -> List[str]:
     """
 
     lines[0] = f'"""{lines[0]}'
+    if not lines[-1].endswith("\n"):
+        lines[-1] += "\n"
     lines[-1] = f'{lines[-1]}"""'
     return lines
 
