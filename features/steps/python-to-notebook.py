@@ -52,7 +52,8 @@ def step_impl(context: Context) -> None:  # noqa: F811
     )
 
 
-@then("a file `{filename}` should be created, containing a Synapse Notebook.")
+@then("a file `{filename}` should be created, containing a Synapse notebook.")
+@then("a file `{filename}` should be overwritten, containing the Synapse notebook.")
 def step_impl(context, filename) -> None:  # noqa: F811
     # check existence
     filename = f"{context.working_directory}/{filename}"
@@ -140,6 +141,5 @@ def assert_cell_type(context: Context, index: int, type: str) -> None:
 
 def assert_cell_content(context: Context, index: int, content: str) -> None:
     cell_content = "".join(context.cells[index]["source"])
-    print(cell_content)
     # TODO: write assert statement
     assert cell_content == content, "The cell content is not correct."
