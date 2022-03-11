@@ -8,6 +8,8 @@ from behave.runner import Context
 
 from synbconvert import SynapseNotebookConverter
 
+import python_to_notebook as nb
+
 
 @given("we have a file with the following statements")
 def step_impl(context) -> None:  # noqa: F811
@@ -19,10 +21,11 @@ def step_impl(context) -> None:  # noqa: F811
     context.files.append(filename)
 
 
-@then("the first cell should be hidden.")
-def step_impl(context) -> None:  # noqa: F811
+@then("the {nth} cell should be hidden.")
+def step_impl(context, nth) -> None:  # noqa: F811
     expected_hidden_status = True
-    assert_cell_hidden_status(context, -2, expected_hidden_status)
+    index = nb.nth_dict[nth] - 1
+    assert_cell_hidden_status(context, index, expected_hidden_status)
 
 
 @given("we have a notebook containing a Python cell")
