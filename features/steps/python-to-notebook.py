@@ -19,6 +19,10 @@ nth_dict = {
 @given("we have a Python file `{filename}` with the following statements")
 @given("we have a simple Python file `{filename}` with the following statements")
 def step_impl(context, filename) -> None:  # noqa: F811
+
+    directory = os.path.dirname(f"{context.working_directory}/{filename}")
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     with open(f"{context.working_directory}/{filename}", "w") as f:
         f.write(context.text)
 
