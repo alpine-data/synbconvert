@@ -2,33 +2,33 @@ name: Python Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.8"
-    - name: Set up Poetry
-      uses: abatilo/actions-poetry@v2.1.3
-      with:
-        poetry-version: 1.1.4
-    - name: Install dependencies
-      run: | 
-        poetry --version
-        poetry install
-        poe style
-        poe test
-    - name: Check Code Quality
-      run: |
-        poe style
-    - name: Run tests
-      run: |
-        poe test
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      - name: Set up Poetry
+        uses: abatilo/actions-poetry@v2.1.3
+        with:
+          poetry-version: 1.1.4
+      - name: Install dependencies
+        run: |
+          poetry --version
+          poetry install
+          poe style
+          poe test
+      - name: Check Code Quality
+        run: |
+          poe style
+      - name: Run tests
+        run: |
+          poe test
