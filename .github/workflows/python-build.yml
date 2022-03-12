@@ -24,11 +24,9 @@ jobs:
         run: |
           poetry --version
           poetry install
-          poe style
-          poe test
       - name: Check Code Quality
         run: |
-          poe style
+          poetry run poe style
       - name: Run tests
         run: |
-          poe test
+          poetry run poe test
