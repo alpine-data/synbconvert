@@ -129,6 +129,7 @@ class SynapseNotebookHandler(object):
         if cell_type == CellType.MARKDOWN:
             # markdown needs to be uncommented in the cell
             source = utils.uncomment_lines(source)
+            source = clean_source(source)
         if hidden:
             # ignore marker needs to be added in the cell
             source.insert(0, utils.ignore_marker())
@@ -148,18 +149,21 @@ def clean_source(source: List[str]) -> List[str]:
 
     # remove leading new lines
     for i in range(len(source)):
-        if source[i] == "\n":
+        if source[i] == "\n" or source[i] == "":
             continue
         else:
             break
+    source = source[i:]
+
     # remove ending new lines
     for j in range(len(source)):
-        if source[::-1][j] == "\n":
+        if source[::-1][j] == "\n" or source[::-1][j] == "":
             continue
         else:
             break
-    if i != 0 or j != 0:
-        source = source[i:-j]
+    if j > 0:
+        source = source[:-j]
+
     # remove new line in last line
     if source:
         source[-1] = source[-1].rstrip("\n")
