@@ -13,7 +13,7 @@ def cli() -> None:
 @click.command()
 @click.argument("source")
 @click.argument("target")
-def convert(source: str, target: str) -> None:
+def synbconvert(source: str, target: str) -> None:
     """
     Defines the click command for converting Python files to Synapse notebooks and vice versa.
 
@@ -33,4 +33,4 @@ def convert(source: str, target: str) -> None:
         )
 
 
-cli.add_command(convert)
+cli.add_command(synbconvert)
