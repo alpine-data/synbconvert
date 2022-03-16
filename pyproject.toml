@@ -2,7 +2,7 @@
 name = "synbconvert"
 version = "0.1.0"
 description = "A simple command line tool to convert Python files to Synapse Notebooks and vice versa."
-authors = ["Jan Bieser <jbieser@kpmg.com>", "Michael Wellner <michael.wellner@gmail.com>"]
+authors = ["Jan Bieser <janwithb@gmail.com>", "Michael Wellner <michael.wellner@gmail.com>"]
 keywords = ["notebook", "synapse"]
 homepage = "https://github.com/alpine-data/synbconvert"
 repository = "https://github.com/alpine-data/synbconvert"
