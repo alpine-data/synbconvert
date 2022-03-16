@@ -1,0 +1,17 @@
+site_name: synbconvert
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - API Reference: api.md
+  - CLI Reference: cli.md
+theme:
+  name: material
+repo_name: alpine-data/synbconvert
+repo_url: https://github.com/alpine-data/synbconvert
+plugins:
+  - search
+  - mkdocstrings
+markdown_extensions:
+  - mkdocs-click
+  - attr_list
+  - md_in_html

@@ -8,6 +8,10 @@ license = "Apache-2.0"
 [tool.poetry.dependencies]
 python = "^3.9"
 click = "^8.0.4"
+mkdocs = "^1.2.3"
+mkdocs-material = "^8.2.5"
+mkdocstrings = "^0.18.1"
+mkdocs-click = "^0.5.0"
 
 [tool.poetry.dev-dependencies]
 behave = "^1.2.6"
@@ -30,7 +34,7 @@ style = [
 test = "behave"
 
 [tool.poetry.scripts]
-synbconvert = "synbconvert.cli:cli"
+synbconvert = "synbconvert.cli:synbconvert"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
