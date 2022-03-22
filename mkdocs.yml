@@ -6,8 +6,10 @@ nav:
   - CLI Reference: cli.md
 theme:
   name: material
+  favicon: img/favicon.png
 repo_name: alpine-data/synbconvert
 repo_url: https://github.com/alpine-data/synbconvert
+edit_uri: edit/feature/documentation/docs
 plugins:
   - search
   - mkdocstrings
@@ -15,3 +17,10 @@ markdown_extensions:
   - mkdocs-click
   - attr_list
   - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+extra_css:
+  - stylesheets/extra.css
