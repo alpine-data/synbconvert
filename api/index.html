@@ -8,7 +8,7 @@
       
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../img/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
@@ -36,6 +36,8 @@
     
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -396,7 +398,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/alpine-data/synbconvert/edit/master/docs/api.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/alpine-data/synbconvert/edit/feature/documentation/docs/api.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
@@ -441,39 +443,39 @@ SynapseNotebookConverter            (<span title="synbconvert.syn_notebook_handl
 
         <details class="quote">
           <summary>Source code in <code>synbconvert/synbconvert.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SynapseNotebookConverter</span><span class="p">(</span><span class="n">SynapseNotebookHandler</span><span class="p">,</span> <span class="n">PythonFileHandler</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This class is responsible for converting Python files to Synapse notebooks and vice versa.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">SynapseNotebookConverter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">convert_synapse_notebook_to_python_file</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">notebook_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">python_file</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Converts a Synapse notebook into a Python file.</span>
-
-<span class="sd">        :param notebook_file: The Synapse notebook to be converted.</span>
-<span class="sd">        :param python_file: The path of the resulting Python file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_synapse_notebook</span><span class="p">(</span><span class="n">notebook_file</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">write_python_file</span><span class="p">(</span><span class="n">python_file</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">convert_python_file_to_synapse_notebook</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">python_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">notebook_file</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Converts a Python file into a Synapse notebook.</span>
-
-<span class="sd">        :param python_file: The Python file to be converted.</span>
-<span class="sd">        :param notebook_file: The path of the resulting Synapse notebook.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_python_file</span><span class="p">(</span><span class="n">python_file</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">write_synapse_notebook</span><span class="p">(</span><span class="n">notebook_file</span><span class="p">,</span> <span class="n">lines</span><span class="p">)</span>
+          <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span> <span class="nc">SynapseNotebookConverter</span><span class="p">(</span><span class="n">SynapseNotebookHandler</span><span class="p">,</span> <span class="n">PythonFileHandler</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="sd">    This class is responsible for converting Python files to Synapse notebooks and vice versa.</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">SynapseNotebookConverter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">def</span> <span class="nf">convert_synapse_notebook_to_python_file</span><span class="p">(</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">notebook_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">python_file</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="sd">        Converts a Synapse notebook into a Python file.</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="sd">        :param notebook_file: The Synapse notebook to be converted.</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="sd">        :param python_file: The path of the resulting Python file.</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="n">cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_synapse_notebook</span><span class="p">(</span><span class="n">notebook_file</span><span class="p">)</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">write_python_file</span><span class="p">(</span><span class="n">python_file</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="k">def</span> <span class="nf">convert_python_file_to_synapse_notebook</span><span class="p">(</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">python_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">notebook_file</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="sd">        Converts a Python file into a Synapse notebook.</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="sd">        :param python_file: The Python file to be converted.</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="sd">        :param notebook_file: The path of the resulting Synapse notebook.</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_python_file</span><span class="p">(</span><span class="n">python_file</span><span class="p">)</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">write_synapse_notebook</span><span class="p">(</span><span class="n">notebook_file</span><span class="p">,</span> <span class="n">lines</span><span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -508,18 +510,18 @@ SynapseNotebookConverter            (<span title="synbconvert.syn_notebook_handl
 
         <details class="quote">
           <summary>Source code in <code>synbconvert/synbconvert.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">convert_python_file_to_synapse_notebook</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">python_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">notebook_file</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Converts a Python file into a Synapse notebook.</span>
-
-<span class="sd">    :param python_file: The Python file to be converted.</span>
-<span class="sd">    :param notebook_file: The path of the resulting Synapse notebook.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_python_file</span><span class="p">(</span><span class="n">python_file</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">write_synapse_notebook</span><span class="p">(</span><span class="n">notebook_file</span><span class="p">,</span> <span class="n">lines</span><span class="p">)</span>
+          <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">convert_python_file_to_synapse_notebook</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">python_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">notebook_file</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="sd">    Converts a Python file into a Synapse notebook.</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="sd">    :param python_file: The Python file to be converted.</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="sd">    :param notebook_file: The path of the resulting Synapse notebook.</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_python_file</span><span class="p">(</span><span class="n">python_file</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">write_synapse_notebook</span><span class="p">(</span><span class="n">notebook_file</span><span class="p">,</span> <span class="n">lines</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -546,18 +548,18 @@ SynapseNotebookConverter            (<span title="synbconvert.syn_notebook_handl
 
         <details class="quote">
           <summary>Source code in <code>synbconvert/synbconvert.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">convert_synapse_notebook_to_python_file</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">notebook_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">python_file</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Converts a Synapse notebook into a Python file.</span>
-
-<span class="sd">    :param notebook_file: The Synapse notebook to be converted.</span>
-<span class="sd">    :param python_file: The path of the resulting Python file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_synapse_notebook</span><span class="p">(</span><span class="n">notebook_file</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">write_python_file</span><span class="p">(</span><span class="n">python_file</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
+          <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">convert_synapse_notebook_to_python_file</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">notebook_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">python_file</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="sd">    Converts a Synapse notebook into a Python file.</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="sd">    :param notebook_file: The Synapse notebook to be converted.</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="sd">    :param python_file: The path of the resulting Python file.</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_synapse_notebook</span><span class="p">(</span><span class="n">notebook_file</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">write_python_file</span><span class="p">(</span><span class="n">python_file</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
