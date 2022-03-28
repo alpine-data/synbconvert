@@ -9,16 +9,12 @@ def cli() -> None:
     Defines the click group.
     """
 
-
 @click.command()
-@click.argument("source")
-@click.argument("target")
-def synbconvert(source: str, target: str) -> None:
+@click.option('--source', help='The path to the file to be converted.')
+@click.option('--target', help='The path of the resulting file.')
+def convert(source: str, target: str) -> None:
     """
-    Defines the click command for converting Python files to Synapse notebooks and vice versa.
-
-    :param source: The file to be converted.
-    :param target: The path of the resulting file.
+    Command for converting Python files to Synapse notebooks and vice versa.
     """
 
     synapse_notebook_converter = SynapseNotebookConverter()
@@ -33,4 +29,4 @@ def synbconvert(source: str, target: str) -> None:
         )
 
 
-cli.add_command(synbconvert)
+cli.add_command(convert)
