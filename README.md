@@ -1,94 +1,38 @@
-# Synapse Notebook Converter
 
-A simple command-line-tool an Python SDK to convert Python files to Synapse notebooks and vice versa.
+<div style="text-align:center"><img style="width: 300px" src="./docs/img/logo.png" /></div>
 
-## Usage
+# synbconvert
 
-To convert a Python file to a valid Synapse notebook, the Python file can be augmented with different markers. If no marker is used, the content of the Python file is interpreted as a single code cell.
+[![Documentation](https://img.shields.io/badge/Documentation-MkDocs-blue)](https://alpine-data.github.io/synbconvert/)
 
-**Defining Code Cells**
 
-Code cells are denoted by `# nb--cell` markers. All lines below the marker until the next marker are added to a code cell in the Synapse notebook. The lines above the fist marker are also added to a code cell.
+Azure Synapse Analytics and Data Factory use notebooks for data preparation, data visualization, machine learning, and many other tasks. 
+However, performing proper version control working with these notebooks is a pain. 
+Merging long nested JSON documents with git is nearly impossible.
+If you would like to use Azure Synapse Analytics or Data Factory for large scale projects while compling with the standards of good software engineering, synbconvert may be the tool you are looking for.
+You will be able to develop code in your favorite IDE and colaborate with your team as usual.
 
-```python
-import foo.bar
+## Features
 
-# nb--cell
-print("first cell logic")
+synbconvert is a simple command line tool and Python API to convert Python files to Azure Synapse Analytics / Data Factory notebooks and vice versa.
+The main features of the tool include:
 
-# nb--cell
-print("second cell logic")
-```
+- Lean annotation syntax for Python files
+- Conversion of Python files to Azure Synapse Analytics / Data Factory notebooks based on annotations
+- Conversion of Azure Synapse Analytics / Data Factory notebooks to annotated Python files
 
-**Exclude Lines**
+## Workflow
 
-To exclude lines from beeing executed in the Synapse notebook, enclose them in an opening `# nb--ignore-begin` and closing `# nb--ignore-end` marker.
+<div style="text-align:center"><img style="width: 885px" src="./docs/img/workflow.png" /></div>
 
-```python
-# nb--ignore-begin
-print("this code will not be executed in the notebook")
-# nb--ignore-end
-```
+## Installation
 
-**Markdown**
+### pip
 
-Markdown is not executed in the Python file but should be shown as formatted text in the Synapse notebook. To define markdown cells, use a docsting comment with a `nb--markdown` marker. 
-
-```python
-"""nb--markdown
-## Markdown Heading
-These lines are not executed in the Python file,
-but shown as markdown in the Synapse notebook. 
-"""
-```
-
-**Include Files**
-
-By converting, the content of imported modules is included in the Synapse notebook (works only with full relative imports). When converting the notebook back to a Python file, relatively imported modules are also written.
-
-```python
-# these imports are included in the notebook
-from .some_module import *
-from .some_package.some_module import *
-from .some_package.some_sub_package.some_module import *
-
-# these imports are not included in the notebook
-from some_module import *               # not relative
-from .some_module import some_method    # not full
-from .some_module import SomeClass      # not full
-```
-
-## Python SDK
-The Python SDK can be used as follows:
-
-```python
-import synbconverter as nc
-
-# convert from Python file to Synapse notebook
-convert_python_file_to_synapse_notebook(python_file='./some_python.py', notebook_file='./notebooks/some_notebook.json')
-
-# convert from Synapse notebook to Python file
-convert_synapse_notebook_to_python_file(notebook_file='./notebooks/some_notebook.json', python_file='./some_python.py''')
-```
-
-## CLI
-The easy CLI can be used as follows:
+synbconvert releases are available as source packages and binary wheels. Before you install synbconvert and its dependencies, make sure that your pip, setuptools and wheel are up to date. When using pip it is generally recommended to install packages in a virtual environment to avoid modifying system state. You can install synbconvert with:
 
 ```console
-$ synbconvert convert <your_source_file_path> <your_target_file_path>
+$ pip install synbconvert
 ```
 
-## Development
-
-`synbconvert` uses [Poetry](https://python-poetry.org/) for dependency management and is packaged with [PyInstaller](https://pyinstaller.readthedocs.io/en/stable/). The minimal requirements for a developer workspace are [Conda](https://docs.conda.io/en/latest/miniconda.html) and [Poetry](https://python-poetry.org/docs/#installation).
-
-```console
-$ git clone git@github.com:alpine-data/synbconvert.git
-$ cd synbconvert
-$ conda create -p ./env python=3.9
-$ conda activate ./env
-
-$ poetry install
-```
-
-For testing we use [Python Behave](https://behave.readthedocs.io/en/stable/index.html). To run the tests, use `poe test` command. Code formatting and static code analysis can be executed with `poe style`.
+<br>
