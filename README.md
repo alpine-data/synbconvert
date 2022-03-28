@@ -1,5 +1,4 @@
-
-<div style="text-align:center"><img style="width: 300px" src="./docs/img/logo.png" /></div>
+<p align="center"><img width="300" src="./docs/img/logo.png"/></p>
 
 # synbconvert
 
@@ -23,7 +22,7 @@ The main features of the tool include:
 
 ## Workflow
 
-<div style="text-align:center"><img style="width: 885px" src="./docs/img/workflow.png" /></div>
+<p align="center"><img width="885" src="./docs/img/workflow.png"/></p>
 
 ## Installation
 
