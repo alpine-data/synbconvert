@@ -84,6 +84,17 @@ python-dateutil = ">=2.8.1"
 dev = ["twine", "markdown", "flake8", "wheel"]
 
 [[package]]
+name = "griffe"
+version = "0.14.0"
+description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+async = ["aiofiles (>=0.7,<1.0)"]
+
+[[package]]
 name = "importlib-metadata"
 version = "4.11.2"
 description = "Read metadata from Python packages"
@@ -257,6 +268,18 @@ pymdown-extensions = ">=6.3"
 crystal = ["mkdocstrings-crystal (>=0.3.4)"]
 python = ["mkdocstrings-python (>=0.5.2)"]
 python-legacy = ["mkdocstrings-python-legacy (>=0.2.1)"]
+
+[[package]]
+name = "mkdocstrings-python"
+version = "0.6.6"
+description = "A Python handler for mkdocstrings."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+griffe = ">=0.11.1"
+mkdocstrings = ">=0.18"
 
 [[package]]
 name = "mkdocstrings-python-legacy"
@@ -510,7 +533,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "1c851f5a8fe273bc3266bb5af078e27bf139efaae8a28659d860a2b9578f3506"
+content-hash = "dafc480e87ca14449f4c16e46620e5a58816e29a8de614ccd8835cda310f0161"
 
 [metadata.files]
 behave = [
@@ -557,6 +580,10 @@ flake8 = [
 ghp-import = [
     {file = "ghp-import-2.0.2.tar.gz", hash = "sha256:947b3771f11be850c852c64b561c600fdddf794bab363060854c1ee7ad05e071"},
     {file = "ghp_import-2.0.2-py3-none-any.whl", hash = "sha256:5f8962b30b20652cdffa9c5a9812f7de6bcb56ec475acac579807719bf242c46"},
+]
+griffe = [
+    {file = "griffe-0.14.0-py3-none-any.whl", hash = "sha256:6335499954fd83d364e898f8845548d04f4fb1174f1c6a787ad868ca48c353fe"},
+    {file = "griffe-0.14.0.tar.gz", hash = "sha256:6da7274ee20f98102a5836113211cf4a4a5aeb08573c15b682c052bbc08c647e"},
 ]
 importlib-metadata = [
     {file = "importlib_metadata-4.11.2-py3-none-any.whl", hash = "sha256:d16e8c1deb60de41b8e8ed21c1a7b947b0bc62fab7e1d470bcdf331cea2e6735"},
@@ -647,6 +674,10 @@ mkdocs-material-extensions = [
 mkdocstrings = [
     {file = "mkdocstrings-0.18.1-py3-none-any.whl", hash = "sha256:4053929356df8cd69ed32eef71d8f676a472ef72980c9ffd4f933ead1debcdad"},
     {file = "mkdocstrings-0.18.1.tar.gz", hash = "sha256:fb7c91ce7e3ab70488d3fa6c073a4f827cdc319042f682ef8ea95459790d64fc"},
+]
+mkdocstrings-python = [
+    {file = "mkdocstrings-python-0.6.6.tar.gz", hash = "sha256:37281696b9f199624ae420e0625b6659b7fdfbea736618bce7fd978682dea3b1"},
+    {file = "mkdocstrings_python-0.6.6-py3-none-any.whl", hash = "sha256:c118438d3cb4b14c492a51d109f4e5b27ab06ba19b099d624430dfd904926152"},
 ]
 mkdocstrings-python-legacy = [
     {file = "mkdocstrings-python-legacy-0.2.2.tar.gz", hash = "sha256:f0e7ec6a19750581b752acb38f6b32fcd1efe006f14f6703125d2c2c9a5c6f02"},

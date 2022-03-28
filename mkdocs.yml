@@ -4,6 +4,7 @@ nav:
   - Usage: usage.md
   - API Reference: api.md
   - CLI Reference: cli.md
+  - Development: dev.md
 theme:
   name: material
   favicon: img/favicon.png
@@ -12,7 +13,8 @@ repo_url: https://github.com/alpine-data/synbconvert
 edit_uri: edit/feature/documentation/docs
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      default_handler: python
 markdown_extensions:
   - mkdocs-click
   - attr_list
