@@ -3,6 +3,7 @@
 # synbconvert
 
 [![Documentation](https://img.shields.io/badge/Documentation-MkDocs-blue)](https://alpine-data.github.io/synbconvert/)
+[![Python Build](https://github.com/alpine-data/synbconvert/actions/workflows/python-build.yml/badge.svg)](https://github.com/alpine-data/synbconvert/actions/workflows/python-build.yml)
 
 
 Azure Synapse Analytics and Data Factory use notebooks for data preparation, data visualization, machine learning, and many other tasks. 
