@@ -62,6 +62,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#usage" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -222,10 +227,64 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Usage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         Usage
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#defining-code-cells" class="md-nav__link">
+    Defining Code Cells
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exclude-lines" class="md-nav__link">
+    Exclude Lines
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#markdown" class="md-nav__link">
+    Markdown
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#include-files" class="md-nav__link">
+    Include Files
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -261,12 +320,81 @@
   
 
     
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/" class="md-nav__link">
+        Development
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
                 </div>
               </div>
             
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#defining-code-cells" class="md-nav__link">
+    Defining Code Cells
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exclude-lines" class="md-nav__link">
+    Exclude Lines
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#markdown" class="md-nav__link">
+    Markdown
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#include-files" class="md-nav__link">
+    Include Files
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
             
           
           <div class="md-content" data-md-component="content">
@@ -279,9 +407,73 @@
 
 
 
-  <h1>Usage</h1>
-
-<p>TBD</p>
+<h1 id="usage">Usage</h1>
+<p>To convert a Python file to a valid Synapse notebook, the Python file can be augmented with different markers. If no marker is used, the content of the Python file is interpreted as a single code cell.</p>
+<h2 id="defining-code-cells">Defining Code Cells</h2>
+<p>Code cells are denoted by <code># nb--cell</code> markers. All lines below the marker until the next marker are added to a code cell in the Synapse notebook. The lines above the fist marker are also added to a code cell.</p>
+<div class="highlight"><span class="filename">example_1.py</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">foo.bar</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># nb--cell</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;first cell logic&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># nb--cell</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;second cell logic&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The simple example above results in the following notebook:</p>
+<figure>
+<p><img alt="Image title" src="../img/create-cells.png" width="885" /></p>
+</figure>
+<h2 id="exclude-lines">Exclude Lines</h2>
+<p>To exclude lines from beeing executed in the Synapse notebook, enclose them in an opening <code># nb--ignore-begin</code> and closing <code># nb--ignore-end</code> marker.</p>
+<div class="highlight"><span class="filename">example_2.py</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># nb--ignore-begin</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this code will not be executed in the notebook&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># nb--ignore-end</span>
+</code></pre></div>
+<p>Ignored code is added to the notebook as a hidden cell.</p>
+<figure>
+<p><img alt="Image title" src="../img/ignore-cells-hidden.png" width="885" /></p>
+</figure>
+<p>After showing the cell content we notice that the code is commented out so it will not be executed. Moreover it contains a <code>nb--ignore</code> marker for reverse conversion.</p>
+<figure>
+<p><img alt="Image title" src="../img/ignore-cells.png" width="885" /></p>
+</figure>
+<h2 id="markdown">Markdown</h2>
+<p>Markdown is not executed in the Python file but should be shown as formatted text in the Synapse notebook. To define markdown cells, use a docsting comment with a <code>nb--markdown</code> marker. </p>
+<div class="highlight"><span class="filename">example_3.py</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="sd">&quot;&quot;&quot;nb--markdown</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="sd">## Markdown Heading</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="sd">These lines are not executed in the Python file,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="sd">but shown as markdown in the Synapse notebook. </span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="sd">&quot;&quot;&quot;</span>
+</code></pre></div>
+<p>The simple example above results in the following markdown cell:</p>
+<figure>
+<p><img alt="Image title" src="../img/markdown-cells.png" width="885" /></p>
+</figure>
+<h2 id="include-files">Include Files</h2>
+<p>By converting, the content of imported modules is included in the Synapse notebook (works only with full relative imports). When converting the notebook back to a Python file, relatively imported modules are also written.</p>
+<div class="highlight"><span class="filename">example_4.py</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># these imports are included in the notebook</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span> <span class="nn">.some_package.some_module</span> <span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kn">from</span> <span class="nn">.some_package.some_sub_package.some_module</span> <span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># these imports are not included in the notebook</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="kn">from</span> <span class="nn">some_module</span> <span class="kn">import</span> <span class="o">*</span>               <span class="c1"># not relative</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="n">some_method</span>    <span class="c1"># not full</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="n">SomeClass</span>      <span class="c1"># not full</span>
+</code></pre></div>
+<p>This example includes a file "example_5.py" that imports from the module "foo/bar.py".</p>
+<div class="highlight"><span class="filename">example_5.py</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span> <span class="nn">.foo.bar</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># nb--cell</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;first cell logic&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">foo/bar.py</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;imported content&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The resulting cells contain <code>nb--import-begin</code> and <code>nb--import-end</code> markers for reverse conversion.</p>
+<figure>
+<p><img alt="Image title" src="../img/import-cells.png" width="885" /></p>
+</figure>
+<p><br></p>
 
               
             </article>
