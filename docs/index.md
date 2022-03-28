@@ -35,14 +35,4 @@ synbconvert releases are available as source packages and binary wheels. Before 
 $ pip install synbconvert
 ```
 
-### Install from source
-
-The other way to install synbconvert is to clone its GitHub repository and build it from source. That is the common way if you want to make changes to the code base. To install from source:
-
-```console
-$ git clone https://github.com/alpine-data/synbconvert.git
-$ pip install -r requirements.txt
-$ pip install -e .
-```
-
 <br>
