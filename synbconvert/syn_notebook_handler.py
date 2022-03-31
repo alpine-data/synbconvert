@@ -158,8 +158,13 @@ def clean_source(source: List[str]) -> List[str]:
             continue
         else:
             break
+
     if i != 0 or j != 0:
-        source = source[i:-j]
+        if j > 0:
+            source = source[i:-j]
+        else:
+            source = source[i:]
+
     # remove new line in last line
     if source:
         source[-1] = source[-1].rstrip("\n")
