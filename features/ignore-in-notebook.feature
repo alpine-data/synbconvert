@@ -14,7 +14,7 @@ Feature: Ignore lines from Python file in Notebook
             '''
 
         When we transform this file.
-        Then the notebook should contain `2` cells.
+        Then the notebook should contain 2 cells.
         And the first cell should contain:
             '''
             """nb--ignore
@@ -42,5 +42,6 @@ Feature: Ignore lines from Python file in Notebook
             # nb--ignore-begin
             import sys
             # nb--ignore-end
+            
             '''
             

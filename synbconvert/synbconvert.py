@@ -35,3 +35,16 @@ class SynapseNotebookConverter(SynapseNotebookHandler, PythonFileHandler):
 
         lines = self.read_python_file(python_file)
         self.write_synapse_notebook(notebook_file, lines)
+
+    def convert(self, source: str, target: str) -> None:
+        """
+        Converts a source file into a target file.
+
+        :param source: The file to be converted.
+        :param target: The path of the resulting file.
+        """
+        if source.endswith(".py") and target.endswith(".json"):
+            self.convert_python_file_to_synapse_notebook(source, target)
+
+        if source.endswith(".json") and target.endswith(".py"):
+            self.convert_synapse_notebook_to_python_file(source, target)

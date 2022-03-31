@@ -11,6 +11,7 @@ def before_scenario(context, scenario):
     # prepare some lists to store mentioned entities during steps
     context.cells = []
     context.files = []
+    context.file_contents = []
     context.notebooks = []
 
 @capture()

@@ -2,8 +2,15 @@
 name = "synbconvert"
 version = "0.1.0"
 description = "A simple command line tool to convert Python files to Synapse Notebooks and vice versa."
-authors = ["Michael Wellner <michaelwellner@kpmg.com>"]
-license = "Apache-2.0"
+authors = ["Jan Bieser <janwithb@gmail.com>", "Michael Wellner <michael.wellner@gmail.com>"]
+keywords = ["notebook", "synapse"]
+homepage = "https://github.com/alpine-data/synbconvert"
+repository = "https://github.com/alpine-data/synbconvert"
+readme = "README.md"
+license = "MIT"
+include = [
+    "LICENSE"
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
