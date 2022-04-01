@@ -146,31 +146,10 @@ def clean_source(source: List[str]) -> List[str]:
     :param source: The source content of the cell.
     :returns: The cleaned source content of the cell.
     """
+    source = list([ line.rstrip() for line in source ])
+    source = "\n".join(source).strip().split("\n")
+    source = list([ f"{line}\n" for line in source ])
 
-    # remove leading new lines
-    for i in range(len(source)):
-        if source[i] == "\n" or source[i] == "":
-            continue
-        else:
-            break
-    source = source[i:]
-
-    # remove ending new lines
-    for j in range(len(source)):
-        if source[::-1][j] == "\n" or source[::-1][j] == "":
-            continue
-        else:
-            break
-
-    if i != 0 or j != 0:
-        if j > 0:
-            source = source[i:-j]
-        else:
-            source = source[i:]
-
-    # remove new line in last line
-    if source:
-        source[-1] = source[-1].rstrip("\n")
     return source
 
 
