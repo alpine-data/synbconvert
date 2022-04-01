@@ -1,10 +1,8 @@
-<p align="center"><img width="300" src="./docs/img/logo.png"/></p>
+<figure markdown>
+  ![Image title](./img/logo.png){ width="400" }
+</figure>
 
 # synbconvert
-
-[![Documentation](https://img.shields.io/badge/Documentation-MkDocs-blue)](https://alpine-data.github.io/synbconvert/)
-[![Python Build](https://github.com/alpine-data/synbconvert/actions/workflows/python-build.yml/badge.svg)](https://github.com/alpine-data/synbconvert/actions/workflows/python-build.yml)
-
 
 Azure Synapse Analytics uses notebooks for data preparation, data visualization, machine learning, and many other tasks. 
 However, performing proper version control working with these notebooks is a pain. 
@@ -23,7 +21,9 @@ The main features of the tool include:
 
 ## Workflow
 
-<p align="center"><img width="885" src="./docs/img/workflow.png"/></p>
+<figure markdown>
+  ![Image title](./img/workflow.png){ width="885" }
+</figure>
 
 ## Installation
 
