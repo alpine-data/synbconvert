@@ -84,44 +84,45 @@ class SynapseNotebookHandler(object):
         # initial cell stats
         cells = []
         cell_type = CellType.CODE
+        ignore = False
         hidden = False
         cell_start_index = 0
 
         for i, line in enumerate(lines):
             if (
-                line.startswith(utils.cell_marker(CellType.CODE))
-                or utils.cell_marker(CellType.MARKDOWN) in line
-                or line.startswith(utils.begin_ignore_marker())
-                or line.startswith(utils.end_ignore_marker())
+                line.startswith(utils.cell_marker(CellType.CODE)) or
+                line.startswith(utils.cell_marker(CellType.CODE, hidden=True)) or
+                utils.cell_marker(CellType.MARKDOWN) in line or
+                line.startswith(utils.begin_ignore_marker()) or
+                line.startswith(utils.end_ignore_marker())
             ):
                 cell_end_index = i
-                # ignore first line marker
-                if i > 0:
-                    cells.append(
-                        self.__create_cell(
-                            cell_type, lines[cell_start_index:cell_end_index], hidden
-                        )
+                cells.append(
+                    self.__create_cell(
+                        cell_type, lines[cell_start_index:cell_end_index], ignore, hidden
                     )
+                )
                 cell_start_index = i + 1
                 cell_type = get_cell_type_from_marker(line)
+                ignore = get_cell_ignore_state_from_marker(line)
                 hidden = get_cell_hidden_state_from_marker(line)
         # append last cell
         cell_end_index = i + 1
         cells.append(
             self.__create_cell(
-                cell_type, lines[cell_start_index:cell_end_index], hidden
+                cell_type, lines[cell_start_index:cell_end_index], ignore, hidden
             )
         )
         return cells
 
     @staticmethod
-    def __create_cell(cell_type: CellType, source: List[str], hidden: bool) -> dict:
+    def __create_cell(cell_type: CellType, source: List[str], ignore: bool, hidden: bool) -> dict:
         """
         Creates a Synapse notebook cell from a List of lines that defines the cell.
 
         :param cell_type: The CellType of the cell.
         :param source: The source content of the cell.
-        :param hidden: The flag that determines whether a cell is hidden or not.
+        :param ignore: The flag that determines whether a cell is ignored or not.
         :returns: The Synapse notebook cell.
         """
 
@@ -130,7 +131,7 @@ class SynapseNotebookHandler(object):
             # markdown needs to be uncommented in the cell
             source = utils.uncomment_lines(source)
             source = clean_source(source)
-        if hidden:
+        if ignore:
             # ignore marker needs to be added in the cell
             source.insert(0, utils.ignore_marker())
             source = utils.comment_lines(source)
@@ -183,6 +184,21 @@ def get_cell_type_from_marker(marker: str) -> CellType:
     return cell_type
 
 
+def get_cell_ignore_state_from_marker(marker: str) -> bool:
+    """
+    Determines whether a cell marker reflects a ignore property or not.
+
+    :param marker: The marker to be examined.
+    :returns: The determined ignore state.
+    """
+
+    if marker.startswith(utils.begin_ignore_marker()):
+        ignore = True
+    else:
+        ignore = False
+    return ignore
+
+
 def get_cell_hidden_state_from_marker(marker: str) -> bool:
     """
     Determines whether a cell marker reflects a hidden property or not.
@@ -191,7 +207,7 @@ def get_cell_hidden_state_from_marker(marker: str) -> bool:
     :returns: The determined hidden state.
     """
 
-    if marker.startswith(utils.begin_ignore_marker()):
+    if marker.startswith(utils.cell_marker(CellType.CODE, hidden=True)) or marker.startswith(utils.begin_ignore_marker()):
         hidden = True
     else:
         hidden = False

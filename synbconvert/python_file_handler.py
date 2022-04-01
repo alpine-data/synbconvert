@@ -95,6 +95,7 @@ class PythonFileHandler(object):
         """
 
         cell_ignore = is_ignored_cell(cell)
+        cell_hidden = is_hidden_cell(cell)
         cell_type = get_cell_type(cell)
         cell_content_list = []
         source_lines = cell["source"]
@@ -107,7 +108,7 @@ class PythonFileHandler(object):
                 source_lines.insert(0, utils.cell_marker(cell_type))
                 source_lines = utils.comment_lines(source_lines)
             else:
-                cell_content_list.append(utils.cell_marker(cell_type))
+                cell_content_list.append(utils.cell_marker(cell_type, cell_hidden))
             for line in source_lines:
                 cell_content_list.append(line)
             # add line break to last line
@@ -195,6 +196,21 @@ def get_cell_type(cell: dict) -> CellType:
     return cell_type
 
 
+def get_cell_hidden_state(cell: dict) -> bool:
+    """
+    Determines whether a cell is hidden or not.
+
+    :param cell: The cell for which the hidden state is to be determined.
+    :returns: The determined hidden state of the cell.
+    """
+
+    if cell["metadata"]["jupyter"]["source_hidden"] == True:
+        hidden = True
+    else:
+        hidden = False
+    return hidden
+
+
 def get_file_path_from_import_definition(import_definition: str) -> str:
     """
     Determines the file path of an imported file from a Python import definition.
@@ -261,6 +277,20 @@ def is_ignored_cell(cell: dict) -> bool:
     """
 
     if utils.uncomment_lines(cell["source"])[0] == utils.ignore_marker():
+        return True
+    else:
+        return False
+
+
+def is_hidden_cell(cell: dict) -> bool:
+    """
+    Checks if a cell is hidden.
+
+    :param line: The cell to be checked.
+    :returns: True if the cell contains is hidden.
+    """
+
+    if cell["metadata"]["jupyter"]["source_hidden"] == True:
         return True
     else:
         return False

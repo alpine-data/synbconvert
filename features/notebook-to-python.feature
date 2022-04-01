@@ -15,6 +15,10 @@ Feature: Synapse Notebook to Python file.
             """
             print('Stop war!')
             """
+        And the 4th cell is a hidden cell with the following content:
+            """
+            print('Stop hiding!')
+            """
         When we transform this file with `synbconvert convert input.json output.py`.
         Then a file `output.py` should be created.
         And the file should contain:
@@ -29,6 +33,9 @@ Feature: Synapse Notebook to Python file.
 
             # nb--cell
             print('Stop war!')
+
+            # nb--hidden
+            print('Stop hiding!')
 
             '''
 
