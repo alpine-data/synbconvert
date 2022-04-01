@@ -22,13 +22,19 @@ def step_impl(context, filename) -> None:  # noqa: F811
 @given("the {counter} cell is a Python cell with the following content")
 def step_impl(context, counter) -> None:  # noqa: F811
     file = f"{context.working_directory}/{context.files[-1]}"
-    append_text_as_cell_to_file(context.text, file, "code")
+    append_text_as_cell_to_file(context.text, file, "code", False)
 
 
 @given("the {counter} cell is a Markdown cell with the following content")
 def step_impl(context, counter) -> None:  # noqa: F811
     file = f"{context.working_directory}/{context.files[-1]}"
-    append_text_as_cell_to_file(context.text, file, "markdown")
+    append_text_as_cell_to_file(context.text, file, "markdown", False)
+
+
+@given("the {counter} cell is a hidden cell with the following content")
+def step_impl(context, counter) -> None:  # noqa: F811
+    file = f"{context.working_directory}/{context.files[-1]}"
+    append_text_as_cell_to_file(context.text, file, "code", True)
 
 
 @then("a file `{filename}` should be created.")
@@ -49,6 +55,8 @@ def step_impl(context, filename) -> None:  # noqa: F811
 @then("the Python file should contain")
 def step_impl(context) -> None:  # noqa: F811
     file_content = "".join(context.file_contents[-1])
+    print(file_content)
+    print(context.text)
     assert file_content == context.text, "The file content is not correct."
 
 
@@ -72,7 +80,7 @@ def append_text_as_cell_to_file(
         "cell_type": cell_type,
         "source": [e + "\n" for e in text.split("\n") if e],
     }
-    cell["metadata"] = create_cell_metadata(True)
+    cell["metadata"] = create_cell_metadata(hidden)
 
     with open(file) as f:
         data = json.load(f)

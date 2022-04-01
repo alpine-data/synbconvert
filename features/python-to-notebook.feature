@@ -106,4 +106,23 @@ Feature: Python to Synapse Notebooks.
             # We stay united with people in Ukraine and Russia
             Fuck off, Putin!
             """
+
+    Scenario: Cells may be hidden
+        Given we have a Python file `input.py` with the following statements:
+            """
+            import sys
+
+            # nb--hidden
+            print("You should better hide.")
+
+            # nb--cell
+            print("Naa, all safe.")
+            """
+        When we transform this Python file.
+        Then the notebook should contain 3 cells.
+        And the second cell should contain:
+            '''
+            print("You should better hide.")
+            '''
+        And the second cell should be hidden.
  
