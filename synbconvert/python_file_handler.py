@@ -196,21 +196,6 @@ def get_cell_type(cell: dict) -> CellType:
     return cell_type
 
 
-def get_cell_hidden_state(cell: dict) -> bool:
-    """
-    Determines whether a cell is hidden or not.
-
-    :param cell: The cell for which the hidden state is to be determined.
-    :returns: The determined hidden state of the cell.
-    """
-
-    if cell["metadata"]["jupyter"]["source_hidden"] == True:
-        hidden = True
-    else:
-        hidden = False
-    return hidden
-
-
 def get_file_path_from_import_definition(import_definition: str) -> str:
     """
     Determines the file path of an imported file from a Python import definition.
@@ -290,7 +275,7 @@ def is_hidden_cell(cell: dict) -> bool:
     :returns: True if the cell contains is hidden.
     """
 
-    if cell["metadata"]["jupyter"]["source_hidden"] == True:
+    if cell["metadata"]["jupyter"]["source_hidden"] is True:
         return True
     else:
         return False

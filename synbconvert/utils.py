@@ -20,9 +20,9 @@ def cell_marker(cell_type: CellType, hidden: bool = False) -> str:
     :returns: The cell type specific cell begin marker.
     """
 
-    if cell_type == CellType.CODE and hidden == False:
+    if cell_type == CellType.CODE and hidden is False:
         marker = "# nb--cell\n"
-    elif cell_type == CellType.CODE and hidden == True:
+    elif cell_type == CellType.CODE and hidden is True:
         marker = "# nb--hidden\n"
     elif cell_type == CellType.MARKDOWN:
         marker = "nb--markdown\n"

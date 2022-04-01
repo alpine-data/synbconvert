@@ -90,16 +90,19 @@ class SynapseNotebookHandler(object):
 
         for i, line in enumerate(lines):
             if (
-                line.startswith(utils.cell_marker(CellType.CODE)) or
-                line.startswith(utils.cell_marker(CellType.CODE, hidden=True)) or
-                utils.cell_marker(CellType.MARKDOWN) in line or
-                line.startswith(utils.begin_ignore_marker()) or
-                line.startswith(utils.end_ignore_marker())
+                line.startswith(utils.cell_marker(CellType.CODE))
+                or line.startswith(utils.cell_marker(CellType.CODE, hidden=True))
+                or utils.cell_marker(CellType.MARKDOWN) in line
+                or line.startswith(utils.begin_ignore_marker())
+                or line.startswith(utils.end_ignore_marker())
             ):
                 cell_end_index = i
                 cells.append(
                     self.__create_cell(
-                        cell_type, lines[cell_start_index:cell_end_index], ignore, hidden
+                        cell_type,
+                        lines[cell_start_index:cell_end_index],
+                        ignore,
+                        hidden,
                     )
                 )
                 cell_start_index = i + 1
@@ -116,7 +119,9 @@ class SynapseNotebookHandler(object):
         return cells
 
     @staticmethod
-    def __create_cell(cell_type: CellType, source: List[str], ignore: bool, hidden: bool) -> dict:
+    def __create_cell(
+        cell_type: CellType, source: List[str], ignore: bool, hidden: bool
+    ) -> dict:
         """
         Creates a Synapse notebook cell from a List of lines that defines the cell.
 
@@ -147,9 +152,9 @@ def clean_source(source: List[str]) -> List[str]:
     :param source: The source content of the cell.
     :returns: The cleaned source content of the cell.
     """
-    source = list([ line.rstrip() for line in source ])
+    source = list([line.rstrip() for line in source])
     source = "\n".join(source).strip().split("\n")
-    source = list([ f"{line}\n" for line in source ])
+    source = list([f"{line}\n" for line in source])
 
     # remove new line in last line
     if source:
@@ -207,7 +212,9 @@ def get_cell_hidden_state_from_marker(marker: str) -> bool:
     :returns: The determined hidden state.
     """
 
-    if marker.startswith(utils.cell_marker(CellType.CODE, hidden=True)) or marker.startswith(utils.begin_ignore_marker()):
+    if marker.startswith(
+        utils.cell_marker(CellType.CODE, hidden=True)
+    ) or marker.startswith(utils.begin_ignore_marker()):
         hidden = True
     else:
         hidden = False
