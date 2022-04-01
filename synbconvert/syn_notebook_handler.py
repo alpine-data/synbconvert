@@ -150,6 +150,10 @@ def clean_source(source: List[str]) -> List[str]:
     source = "\n".join(source).strip().split("\n")
     source = list([ f"{line}\n" for line in source ])
 
+    # remove new line in last line
+    if source:
+        source[-1] = source[-1].rstrip("\n")
+
     return source
 
 
