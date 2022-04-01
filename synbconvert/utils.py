@@ -12,7 +12,7 @@ class CellType(Enum):
     MARKDOWN = "markdown"
 
 
-def cell_marker(cell_type: CellType) -> str:
+def cell_marker(cell_type: CellType, hidden: bool = False) -> str:
     """
     Creates a cell begin marker based on the type of the cell.
 
@@ -20,8 +20,10 @@ def cell_marker(cell_type: CellType) -> str:
     :returns: The cell type specific cell begin marker.
     """
 
-    if cell_type == CellType.CODE:
+    if cell_type == CellType.CODE and hidden is False:
         marker = "# nb--cell\n"
+    elif cell_type == CellType.CODE and hidden is True:
+        marker = "# nb--hidden\n"
     elif cell_type == CellType.MARKDOWN:
         marker = "nb--markdown\n"
     return marker
@@ -89,6 +91,8 @@ def comment_lines(lines: List[str]) -> List[str]:
     """
 
     lines[0] = f'"""{lines[0]}'
+    if not lines[-1].endswith("\n"):
+        lines[-1] += "\n"
     lines[-1] = f'{lines[-1]}"""'
     return lines
 

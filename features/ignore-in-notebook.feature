@@ -14,7 +14,7 @@ Feature: Ignore lines from Python file in Notebook
             '''
 
         When we transform this file.
-        Then the notebook should contain `2` cells.
+        Then the notebook should contain 2 cells.
         And the first cell should contain:
             '''
             """nb--ignore
@@ -27,6 +27,51 @@ Feature: Ignore lines from Python file in Notebook
             n = sys.maxsize # number of repetitions
             my_string = "Stop War!"
             print(my_string*n)
+            '''
+
+    Scenario: Multiple ignored cells
+        Given we have a file with the following statements:
+            '''
+            n = sys.maxsize # number of repetitions
+            my_string = "Stop War!"
+            print(my_string*n)
+
+            # nb--ignore-begin
+            import foo
+            # nb--ignore-end
+
+            # nb--ignore-begin
+            import bar
+            # nb--ignore-end
+
+            print("do not ignore war!")
+            '''
+
+        When we transform this file.
+        Then the notebook should contain 4 cells.
+        And the first cell should contain:
+            '''
+            n = sys.maxsize # number of repetitions
+            my_string = "Stop War!"
+            print(my_string*n)
+            '''
+        And the second cell should contain:
+            '''
+            """nb--ignore
+            import foo
+            """
+            '''
+        And the second cell should be hidden.
+        And the third cell should contain:
+            '''
+            """nb--ignore
+            import bar
+            """
+            '''
+        And the third cell should be hidden.
+        And the 4th cell should contain:
+            '''
+            print("do not ignore war!")
             '''
 
     Scenario: Ignored lines from Notebook should be included in Python file.
@@ -42,5 +87,5 @@ Feature: Ignore lines from Python file in Notebook
             # nb--ignore-begin
             import sys
             # nb--ignore-end
-            '''
             
+            '''
