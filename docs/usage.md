@@ -44,6 +44,30 @@ After showing the cell content we notice that the code is commented out so it wi
   ![Image title](./img/ignore-cells.png){ width="885" }
 </figure>
 
+## Hide Cells
+
+If you want cells to be executed but remain hidden in the notebook at the same time, use the marker `nb--hidden`.
+
+```py title="example_3.py"
+"""
+import foo.bar
+
+# nb--hidden
+print("first hidden cell logic")
+"""
+```
+
+A hidden cell will be added to the notebook.
+
+<figure markdown>
+  ![Image title](./img/ignore-cells-hidden.png){ width="885" }
+</figure>
+
+However, compared to an ignored cell, after showing the cell content we notice that the code is not commented out so it will  be executed.
+
+<figure markdown>
+  ![Image title](./img/hidden-cells.png){ width="885" }
+</figure>
 
 ## Markdown
 
