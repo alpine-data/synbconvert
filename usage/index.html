@@ -269,6 +269,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hide-cells" class="md-nav__link">
+    Hide Cells
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#markdown" class="md-nav__link">
     Markdown
   </a>
@@ -376,6 +383,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hide-cells" class="md-nav__link">
+    Hide Cells
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#markdown" class="md-nav__link">
     Markdown
   </a>
@@ -437,13 +451,30 @@
 <figure>
 <p><img alt="Image title" src="../img/ignore-cells.png" width="885" /></p>
 </figure>
+<h2 id="hide-cells">Hide Cells</h2>
+<p>If you want cells to be executed but remain hidden in the notebook at the same time, use the marker <code>nb--hidden</code>.</p>
+<div class="highlight"><span class="filename">example_3.py</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="sd">import foo.bar</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="sd"># nb--hidden</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="sd">print(&quot;first hidden cell logic&quot;)</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="sd">&quot;&quot;&quot;</span>
+</code></pre></div>
+<p>A hidden cell will be added to the notebook.</p>
+<figure>
+<p><img alt="Image title" src="../img/ignore-cells-hidden.png" width="885" /></p>
+</figure>
+<p>However, compared to an ignored cell, after showing the cell content we notice that the code is not commented out so it will  be executed.</p>
+<figure>
+<p><img alt="Image title" src="../img/hidden-cells.png" width="885" /></p>
+</figure>
 <h2 id="markdown">Markdown</h2>
 <p>Markdown is not executed in the Python file but should be shown as formatted text in the Synapse notebook. To define markdown cells, use a docsting comment with a <code>nb--markdown</code> marker. </p>
-<div class="highlight"><span class="filename">example_3.py</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="sd">&quot;&quot;&quot;nb--markdown</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="sd">## Markdown Heading</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="sd">These lines are not executed in the Python file,</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="sd">but shown as markdown in the Synapse notebook. </span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight"><span class="filename">example_3.py</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="sd">&quot;&quot;&quot;nb--markdown</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="sd">## Markdown Heading</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="sd">These lines are not executed in the Python file,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="sd">but shown as markdown in the Synapse notebook. </span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="sd">&quot;&quot;&quot;</span>
 </code></pre></div>
 <p>The simple example above results in the following markdown cell:</p>
 <figure>
@@ -451,23 +482,23 @@
 </figure>
 <h2 id="include-files">Include Files</h2>
 <p>By converting, the content of imported modules is included in the Synapse notebook (works only with full relative imports). When converting the notebook back to a Python file, relatively imported modules are also written.</p>
-<div class="highlight"><span class="filename">example_4.py</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># these imports are included in the notebook</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="o">*</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span> <span class="nn">.some_package.some_module</span> <span class="kn">import</span> <span class="o">*</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kn">from</span> <span class="nn">.some_package.some_sub_package.some_module</span> <span class="kn">import</span> <span class="o">*</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># these imports are not included in the notebook</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="kn">from</span> <span class="nn">some_module</span> <span class="kn">import</span> <span class="o">*</span>               <span class="c1"># not relative</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="n">some_method</span>    <span class="c1"># not full</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="n">SomeClass</span>      <span class="c1"># not full</span>
+<div class="highlight"><span class="filename">example_4.py</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># these imports are included in the notebook</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">from</span> <span class="nn">.some_package.some_module</span> <span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kn">from</span> <span class="nn">.some_package.some_sub_package.some_module</span> <span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># these imports are not included in the notebook</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="kn">from</span> <span class="nn">some_module</span> <span class="kn">import</span> <span class="o">*</span>               <span class="c1"># not relative</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="n">some_method</span>    <span class="c1"># not full</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="kn">from</span> <span class="nn">.some_module</span> <span class="kn">import</span> <span class="n">SomeClass</span>      <span class="c1"># not full</span>
 </code></pre></div>
 <p>This example includes a file "example_5.py" that imports from the module "foo/bar.py".</p>
-<div class="highlight"><span class="filename">example_5.py</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span> <span class="nn">.foo.bar</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># nb--cell</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;first cell logic&quot;</span><span class="p">)</span>
+<div class="highlight"><span class="filename">example_5.py</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span> <span class="nn">.foo.bar</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># nb--cell</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;first cell logic&quot;</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><span class="filename">foo/bar.py</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;imported content&quot;</span><span class="p">)</span>
+<div class="highlight"><span class="filename">foo/bar.py</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;imported content&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>The resulting cells contain <code>nb--import-begin</code> and <code>nb--import-end</code> markers for reverse conversion.</p>
 <figure>
