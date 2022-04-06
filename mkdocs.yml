@@ -10,7 +10,7 @@ theme:
   favicon: img/favicon.png
 repo_name: alpine-data/synbconvert
 repo_url: https://github.com/alpine-data/synbconvert
-edit_uri: edit/feature/documentation/docs
+edit_uri: edit/main/docs
 plugins:
   - search
   - mkdocstrings:
