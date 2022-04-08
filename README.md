@@ -1,4 +1,4 @@
-<p align="center"><img width="300" src="./docs/img/logo.png"/></p>
+<p align="center"><img width="300" src="https://raw.githubusercontent.com/alpine-data/synbconvert/main/docs/img/logo.png"/></p>
 
 # synbconvert
 
@@ -23,7 +23,7 @@ The main features of the tool include:
 
 ## Workflow
 
-<p align="center"><img width="885" src="./docs/img/workflow.png"/></p>
+<p align="center"><img width="885" src="https://raw.githubusercontent.com/alpine-data/synbconvert/main/docs/img/workflow.png"/></p>
 
 ## Installation
 
