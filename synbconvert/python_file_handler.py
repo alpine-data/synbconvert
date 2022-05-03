@@ -275,9 +275,12 @@ def is_hidden_cell(cell: dict) -> bool:
     :returns: True if the cell contains is hidden.
     """
 
-    if cell["metadata"]["jupyter"]["source_hidden"] is True:
-        return True
-    else:
+    try:
+        if cell["metadata"]["jupyter"]["source_hidden"] is True:
+            return True
+        else:
+            return False
+    except KeyError:
         return False
 
 
