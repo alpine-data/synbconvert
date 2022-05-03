@@ -95,6 +95,7 @@ class SynapseNotebookHandler(object):
                 or utils.cell_marker(CellType.MARKDOWN) in line
                 or line.startswith(utils.begin_ignore_marker())
                 or line.startswith(utils.end_ignore_marker())
+                or (line.startswith("\"\"\"") and cell_type == CellType.MARKDOWN)
             ):
                 cell_end_index = i
                 cells.append(
