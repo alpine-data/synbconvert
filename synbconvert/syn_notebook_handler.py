@@ -2,6 +2,7 @@ import json
 import os
 from typing import Dict
 from typing import List
+from typing import Optional
 
 from synbconvert import utils
 from synbconvert.utils import CellType
@@ -42,7 +43,7 @@ class SynapseNotebookHandler(object):
             cells = data["properties"]["cells"]
         return cells
 
-    def write_synapse_notebook(self, file: str, lines: List[str]) -> None:
+    def write_synapse_notebook(self, file: str, lines: List[str], folder: Optional[str]= None) -> None:
         """
         Writes lines from a Python file to a Synapse notebook.
 
@@ -53,6 +54,7 @@ class SynapseNotebookHandler(object):
 
         :param file: The relative path (dir + file name) of the Synapse notebook to be written.
         :param lines: The List that contains lines from a Python file.
+        :param folder: The path name of the synapse folder property of a Synapse resource.
         """
 
         cells = self.__create_cells(lines)
@@ -63,6 +65,10 @@ class SynapseNotebookHandler(object):
             with open(file) as f:
                 data = json.load(f)
                 data["properties"]["cells"] = cells
+                if folder is not None:
+                    data["properties"]["folder"] = {
+                        "name": folder
+                    }
 
             with open(file, "w") as f:
                 json.dump(data, f)
@@ -70,6 +76,10 @@ class SynapseNotebookHandler(object):
             data = create_synapse_notebook_template()
             data["name"] = os.path.splitext(os.path.basename(file))[0]
             data["properties"]["cells"] = cells
+            if folder is not None:
+                data["properties"]["folder"] = {
+                    "name": folder
+                }
             with open(file, "w") as f:
                 json.dump(data, f)
 

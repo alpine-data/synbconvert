@@ -1,5 +1,6 @@
 from synbconvert.python_file_handler import PythonFileHandler
 from synbconvert.syn_notebook_handler import SynapseNotebookHandler
+from typing import Optional
 
 
 class SynapseNotebookConverter(SynapseNotebookHandler, PythonFileHandler):
@@ -24,17 +25,18 @@ class SynapseNotebookConverter(SynapseNotebookHandler, PythonFileHandler):
         self.write_python_file(python_file, cells)
 
     def convert_python_file_to_synapse_notebook(
-        self, python_file: str, notebook_file: str
+        self, python_file: str, notebook_file: str, folder: Optional[str]= None
     ) -> None:
         """
         Converts a Python file into a Synapse notebook.
 
         :param python_file: The Python file to be converted.
         :param notebook_file: The path of the resulting Synapse notebook.
+        :param folder: The path name of the synapse folder property of a Synapse resource.
         """
 
         lines = self.read_python_file(python_file)
-        self.write_synapse_notebook(notebook_file, lines)
+        self.write_synapse_notebook(notebook_file, lines, folder)
 
     def convert(self, source: str, target: str) -> None:
         """
