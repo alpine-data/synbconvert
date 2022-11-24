@@ -42,7 +42,7 @@ class PythonFileHandler(object):
 
                 if import_path.startswith("//"):
                     steps_up = 0
-                    for l in import_path:
+                    for _ in import_path:
                         steps_up += 1
 
                 #    steps_up = [i for i in ]
