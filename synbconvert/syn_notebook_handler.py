@@ -43,7 +43,7 @@ class SynapseNotebookHandler(object):
             cells = data["properties"]["cells"]
         return cells
 
-    def write_synapse_notebook(self, file: str, lines: List[str], folder: Optional[str]= None) -> None:
+    def write_synapse_notebook(self, file: str, lines: List[str], folder: Optional[str]= None, **kwargs) -> None:
         """
         Writes lines from a Python file to a Synapse notebook.
 
@@ -70,10 +70,31 @@ class SynapseNotebookHandler(object):
                         "name": folder
                     }
 
+                if kwargs is not None:
+
+                    for k,v in kwargs.items():
+                        if k in data["properties"]["sessionProperties"]:
+                            data["properties"]["sessionProperties"][k] = v
+                        elif k in data["properties"]["metadata"]:
+                            data["properties"]["metadata"][k] = v
+                        elif k == "dynamicAllocationEnabled":
+                            data["properties"]["sessionProperties"]["conf"]["spark.dynamicAllocation.enabled"] = v
+                        elif k == "dynamicAllocationMinExecutors":
+                            data["properties"]["sessionProperties"]["conf"]["spark.dynamicAllocation.minExecutors"] = v
+                        elif k == "dynamicAllocationMaxExecutors":
+                            data["properties"]["sessionProperties"]["conf"]["spark.dynamicAllocation.maxExecutors"] = v
+                        elif k == "targetSparkConfigurationName":
+                            data["properties"]["targetSparkConfiguration"] = {
+                                "referenceName": v,
+                                "type": "SparkConfigurationReference"
+                            }
+                            data["properties"]["metadata"]["targetSparkConfiguration"] = v
+
+
             with open(file, "w") as f:
-                json.dump(data, f)
+                json.dump(data, f, indent=4)
         else:
-            data = create_synapse_notebook_template()
+            data = create_synapse_notebook_template(**kwargs)
             data["name"] = os.path.splitext(os.path.basename(file))[0]
             data["properties"]["cells"] = cells
             if folder is not None:
@@ -81,7 +102,7 @@ class SynapseNotebookHandler(object):
                     "name": folder
                 }
             with open(file, "w") as f:
-                json.dump(data, f)
+                json.dump(data, f, indent=4)
 
     def __create_cells(self, lines: List[str]) -> List[Dict]:
         """
@@ -232,38 +253,66 @@ def get_cell_hidden_state_from_marker(marker: str) -> bool:
     return hidden
 
 
-def create_synapse_notebook_template() -> dict:
+def create_synapse_notebook_template(
+        enableDebugMode: bool = False,
+        dynamicAllocationEnabled: str= "false",
+        numExecutors: int=2,
+        dynamicAllocationMinExecutors: Optional[int] = None,
+        dynamicAllocationMaxExecutors: Optional[int] = None,
+        sessionKeepAliveTimeout: int=30,
+        runAsWorkspaceSystemIdentity: bool=False,
+        targetSparkConfigurationName: Optional[str] = None) \
+        -> dict:
     """
     Creates the base Dict of a Synapse notebook.
 
     :returns: The base Dict of a Synapse notebook.
     """
 
-    return {
+    if dynamicAllocationEnabled == "false" or (dynamicAllocationMinExecutors is None) or (dynamicAllocationMaxExecutors is None):
+        dynamicAllocationMinExecutors = numExecutors
+        dynamicAllocationMaxExecutors = numExecutors
+
+    result = {
         "name": "",
         "properties": {
             "nbformat": 4,
             "nbformat_minor": 2,
+            "bigDataPool" : {
+                "referenceName": "poolS",
+                "type": "BigDataPoolReference"
+            },
             "sessionProperties": {
                 "driverMemory": "28g",
                 "driverCores": 4,
                 "executorMemory": "28g",
                 "executorCores": 4,
-                "numExecutors": 2,
+                "numExecutors": numExecutors,
+                "runAsWorkspaceSystemIdentity": runAsWorkspaceSystemIdentity,
                 "conf": {
-                    "spark.dynamicAllocation.enabled": "false",
-                    "spark.dynamicAllocation.minExecutors": "2",
-                    "spark.dynamicAllocation.maxExecutors": "2",
+                    "spark.dynamicAllocation.enabled": dynamicAllocationEnabled,
+                    "spark.dynamicAllocation.minExecutors": dynamicAllocationMinExecutors,
+                    "spark.dynamicAllocation.maxExecutors": dynamicAllocationMaxExecutors,
                     "spark.autotune.trackingId": "",
                 },
             },
             "metadata": {
                 "saveOutput": True,
-                "enableDebugMode": False,
+                "enableDebugMode": enableDebugMode,
                 "kernelspec": {"name": "synapse_pyspark", "display_name": "python"},
                 "language_info": {"name": "python"},
-                "sessionKeepAliveTimeout": 30,
+                "sessionKeepAliveTimeout": sessionKeepAliveTimeout,
             },
             "cells": [],
         },
     }
+
+    if targetSparkConfigurationName:
+        result["properties"]["targetSparkConfiguration"] = {
+            "referenceName": targetSparkConfigurationName,
+            "type": "SparkConfigurationReference"
+        }
+
+        result["properties"]["metadata"]["targetSparkConfiguration"] = targetSparkConfigurationName
+
+    return result
