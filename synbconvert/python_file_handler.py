@@ -219,7 +219,6 @@ def get_file_path_from_import_definition(import_definition: str) -> str:
     filename = import_definition.split(" ")[1].split(".")[-1]
     filename = f"{filename}.py"
     import_path = f"{path}/{filename}"
-    print(import_path)
     return import_path
 
 
