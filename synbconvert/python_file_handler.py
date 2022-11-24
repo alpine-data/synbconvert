@@ -39,6 +39,14 @@ class PythonFileHandler(object):
             if is_relative_full_import(line):
                 import_path = get_file_path_from_import_definition(line)
                 # join import path with relative file path
+
+                if import_path.startswith("//"):
+                    steps_up = 0
+                    for _ in import_path:
+                        steps_up += 1
+
+                #    steps_up = [i for i in ]
+
                 if file_path == "":
                     full_path = f".{import_path}"
                 else:

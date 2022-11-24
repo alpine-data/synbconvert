@@ -1,6 +1,8 @@
+from typing import Any
+from typing import Optional
+
 from synbconvert.python_file_handler import PythonFileHandler
 from synbconvert.syn_notebook_handler import SynapseNotebookHandler
-from typing import Optional
 
 
 class SynapseNotebookConverter(SynapseNotebookHandler, PythonFileHandler):
@@ -25,7 +27,11 @@ class SynapseNotebookConverter(SynapseNotebookHandler, PythonFileHandler):
         self.write_python_file(python_file, cells)
 
     def convert_python_file_to_synapse_notebook(
-        self, python_file: str, notebook_file: str, folder: Optional[str]= None
+        self,
+        python_file: str,
+        notebook_file: str,
+        folder: Optional[str] = None,
+        **kwargs: Any
     ) -> None:
         """
         Converts a Python file into a Synapse notebook.
@@ -36,17 +42,18 @@ class SynapseNotebookConverter(SynapseNotebookHandler, PythonFileHandler):
         """
 
         lines = self.read_python_file(python_file)
-        self.write_synapse_notebook(notebook_file, lines, folder)
+        self.write_synapse_notebook(notebook_file, lines, folder, **kwargs)
 
-    def convert(self, source: str, target: str) -> None:
+    def convert(self, source: str, target: str, folder: Optional[str] = None) -> None:
         """
         Converts a source file into a target file.
 
         :param source: The file to be converted.
         :param target: The path of the resulting file.
+        :param folder: The path name of the synapse folder property of a Synapse resource.
         """
         if source.endswith(".py") and target.endswith(".json"):
-            self.convert_python_file_to_synapse_notebook(source, target)
+            self.convert_python_file_to_synapse_notebook(source, target, folder)
 
         if source.endswith(".json") and target.endswith(".py"):
             self.convert_synapse_notebook_to_python_file(source, target)
