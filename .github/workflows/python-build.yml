@@ -2,7 +2,7 @@ name: Python Build
 
 on:
   push:
-    branches: [main, feature/contribution-tools]
+    branches: [main]
   pull_request:
     branches: [main]
 
