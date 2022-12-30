@@ -37,3 +37,18 @@ $ pip install synbconvert
 ```
 
 <br>
+
+## Contribute
+Thank you for taking the time to contribute to synbconvert. Before submitting a pull request, please make sure to bump the project version with:
+
+```console
+$ poetry version minor
+```
+
+for minor releases or
+
+```console
+$ poetry version major
+```
+
+for major releases.

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "synbconvert"
-version = "0.1.0"
+version = "0.3.0"
 description = "A simple command line tool to convert Python files to Synapse Notebooks and vice versa."
 authors = ["Jan Bieser <janwithb@gmail.com>", "Michael Wellner <michael.wellner@gmail.com>"]
 keywords = ["python", "converter", "notebook", "azure", "synapse-analytics"]

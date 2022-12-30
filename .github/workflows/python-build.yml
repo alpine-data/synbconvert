@@ -30,3 +30,8 @@ jobs:
       - name: Run tests
         run: |
           poetry run poe test
+      - name: Build and release package
+        run: |
+          poetry build
+          poetry publish
+      
