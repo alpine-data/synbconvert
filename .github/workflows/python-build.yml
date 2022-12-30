@@ -35,3 +35,4 @@ jobs:
           poetry build
           poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
           poetry publish
+        if: github.event_name == 'push'
