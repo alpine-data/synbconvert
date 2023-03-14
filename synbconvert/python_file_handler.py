@@ -33,7 +33,7 @@ class PythonFileHandler(object):
 
         new_lines = []
         file_path = os.path.dirname(os.path.relpath(file))
-        with open(file) as f:
+        with open(file, encoding="utf-8") as f:
             lines = f.readlines()
         for line in lines:
             if is_relative_full_import(line):
@@ -150,7 +150,7 @@ class PythonFileHandler(object):
         file_path = os.path.dirname(os.path.relpath(file))
         if not file_path == "" and not os.path.exists(file_path):
             os.makedirs(file_path)
-        f = open(file, "w")
+        f = open(file, "w", encoding="utf-8")
         # remove first line if it contains only a new line
         if lines[0] == "\n":
             lines.remove(lines[0])
