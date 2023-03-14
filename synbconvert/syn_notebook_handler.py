@@ -39,7 +39,7 @@ class SynapseNotebookHandler(object):
         :returns: The list of all cells which are contained in the Synapse notebook.
         """
 
-        with open(file) as f:
+        with open(file, encoding="utf-8") as f:
             data = json.load(f)
             cells = data["properties"]["cells"]
         return cells
@@ -69,7 +69,7 @@ class SynapseNotebookHandler(object):
 
         # write cells to existing notebook if the notebook already exists
         if os.path.isfile(file):
-            with open(file) as f:
+            with open(file, encoding="utf-8") as f:
                 data = json.load(f)
                 data["properties"]["cells"] = cells
                 if folder is not None:
@@ -103,7 +103,7 @@ class SynapseNotebookHandler(object):
                                 "targetSparkConfiguration"
                             ] = v
 
-            with open(file, "w") as f:
+            with open(file, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4)
         else:
             data = create_synapse_notebook_template(**kwargs)  # typ
@@ -111,7 +111,7 @@ class SynapseNotebookHandler(object):
             data["properties"]["cells"] = cells
             if folder is not None:
                 data["properties"]["folder"] = {"name": folder}
-            with open(file, "w") as f:
+            with open(file, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4)
 
     def __create_cells(self, lines: List[str]) -> List[Dict]:
@@ -182,6 +182,7 @@ class SynapseNotebookHandler(object):
             # ignore marker needs to be added in the cell
             source.insert(0, utils.ignore_marker())
             source = utils.comment_lines(source)
+            source.append("\npass")
         cell: dict = {"cell_type": cell_type.value, "source": source}
         cell["metadata"] = create_cell_metadata(hidden)
         return cell

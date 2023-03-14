@@ -20,6 +20,7 @@ Feature: Ignore lines from Python file in Notebook
             """nb--ignore
             import sys
             """
+            pass
             '''
         And the first cell should be hidden.
         And the second cell should contain:
@@ -60,6 +61,7 @@ Feature: Ignore lines from Python file in Notebook
             """nb--ignore
             import foo
             """
+            pass
             '''
         And the second cell should be hidden.
         And the third cell should contain:
@@ -67,6 +69,7 @@ Feature: Ignore lines from Python file in Notebook
             """nb--ignore
             import bar
             """
+            pass
             '''
         And the third cell should be hidden.
         And the 4th cell should contain:
