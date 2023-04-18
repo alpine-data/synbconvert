@@ -293,7 +293,6 @@ def create_synapse_notebook_template(
         "properties": {
             "nbformat": 4,
             "nbformat_minor": 2,
-            "bigDataPool": {"referenceName": "poolS", "type": "BigDataPoolReference"},
             "sessionProperties": {
                 "driverMemory": "28g",
                 "driverCores": 4,
